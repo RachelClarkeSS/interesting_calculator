@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legal Interest Calculator</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" 
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap" rel="stylesheet">
+    
+    <style>
+
+        body {
+            text-align: center;
+            background-color: #101010;
+            
+        }
+
+        h2 {
+            text-align: center;   
+            color: #D8D8D8; 
+            font-family: 'Alfa Slab One', cursive;
+        }
+
+        h6 {
+            color: powderblue; 
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        h5 {
+            color: rgb(255, 255, 255); 
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .center {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        input.placeholder {
+            text-align: center;
+        }
+
+        input[type="checkbox"]:focus{
+        outline:none !important; }
+
+         .topnav {
+
+         background-color: rgb(51, 51, 51);
+         overflow: hidden;
+         position: sticky;
+         }
+
+         .topnav a {
+         float: left;
+         color: #f2f2f2;
+         text-align: center;
+         padding: 22px 5%;
+         text-decoration: none;
+         font-size: 17px;
+         }
+
+        #days{
+            color: white;
+        }
+
+        .input-symbol-euro {
+        position: relative;
+        }
+        .input-symbol-euro input {
+            padding-left:18px;
+        }
+        .input-symbol-euro:before {
+            position: absolute;
+            top: 0;
+            content:"£";
+            left: 25px;
+        }
+
+        .input-symbol-percentage {
+        position: relative;
+        }
+        .input-symbol-percentage input {
+            padding-left:18px;
+        }
+        .input-symbol-percentage:after {
+            position: absolute;
+            top: 0;
+            content:"%";
+            left: 100px;
+        }
+
+
+    </style>
+</head>
+<body>
+<div class="topnav fixed-top">
+ 
+    <a href="/" style="width: 100%; background-color: black;"><h2 style="text-align: center;">
+        Legal Interest Calculator</h2></a>
+</div>
+<br><br>
+<form action="/showAnswer" method="POST">
+    <table class="center" id="center1">
+        <tr>
+            <td><label for="base0"></label><h6>BASE SUM</h6></td>
+            <td><label for="interest0"></label><h6>INTEREST RATE</h6></td>
+        </tr>
+        <tr>
+            <td>
+                <span class="input-symbol-euro">
+                    <input type="number" id="base0" name="base0" step ="any" style="width: 160px; text-align: center;" required>
+                </span></td>
+            <td>
+                <span class="input-symbol-percentage">
+                    <input type="number" name="interest0" step ="any" list="interest" style="width: 160px; height: 30px; text-align: center;" required/>
+                    <datalist id="interest">
+                        <option value="8" selected="selected">Default Judgment (8%)</option>
+                        <option value="10">Enhanced Interest (10%)</option>
+                        <option value="2">General Damages (2%)</option>
+                    </datalist>
+
+                </span>
+                  
+            </td>
+        </tr>
+
+        
+    </table>
+    <br>
+    <table class="center" id="center2">
+    
+        <tr>
+            <td><label for="commence0"><h6>COMMENCING</h6></label></td>
+            <td><label for="terminate0"><h6>TERMINATING</h6></label></td>
+            <td><label for="saver" style="display: none;"><h6>TERMINATING</h6></label></td>
+        </tr>
+
+        <tr>
+            <td><input type="date" id="commence0" name="commence0" style="width: 160px; text-align: center;" 
+                 required></td>
+            <td><input type="date" id="terminate0" name="terminate0" style="width: 160px; text-align: center;"
+                 required></td>
+            <td><input type="text" id="saver" name="saver" style="display:none;" value="Select Finish" placeholder="Select Finish" 
+                onfocus="(this.type='date')" onblur="(this.type='text')"></td>
+        </tr>
+    </table>
+
+    <table class="center" id="center3">
+        <br>
+    </table>
+    <br>
+    <tr>
+        <td><input type="checkbox" id="adddate" name="adddate" value="addanother" onclick="addDate()"></td>
+    </tr>
+    <tr>
+        <td><label for="adddate"> <p style="color: yellowgreen;">Add New Date</p></label></td>
+    </tr>
+    <tr>
+        <td><input type="checkbox" id="addratedate" name="addratedate" value="addratedate" onclick="addRateDate()"></td>
+    </tr>
+    <tr>
+        <td><label for="addratedate"> <p style="color: yellowgreen;">Add New Rate</p></label></td>
+    </tr>
+    <tr><br>
+        <td><input type="checkbox" id="addPoA" name="addPoA" value="addPoA" onclick="addpoa()"></td>
+    </tr>
+    <tr>
+        <td><label for="addPoA"> <p style="color: yellowgreen;">Add Payment on Account</p></label></td>
+    </tr><br>
+    <tr>
+    <tr>
+        <td><input type="submit" class="btn btn-primary" value="Calculate" style="width:320px"></td>
+    </tr>
+    
+</table></form><br>
+                                                    
+      <script>
+          $("#adddate").click(function(){
+              $('input[type="checkbox"]').prop('checked',false);
+            });
+
+          $("#addratedate").click(function(){
+              $('input[type="checkbox"]').prop('checked',false);
+            });
+        
+          $("#addPoA").click(function(){
+              $('input[type="checkbox"]').prop('checked',false);
+           });
+
+           $(".js-example-tags").select2({
+              tags: true
+            });
+
+          var count = 0;
+          var poacount = 0;
+
+          var cDate = document.querySelector("#commence0");
+          var tDate = document.querySelector("#terminate0");
+
+          function addDate() {
+              var table = document.getElementById("center2");
+              var row = table.insertRow(-1);
+              var cell1 = row.insertCell(0);
+              var cell2 = row.insertCell(1);
+              cell1.innerHTML = `<td><input type="date" id="commence0" name="commence`+count+`" style="width: 160px; text-align: center;" required></td>`;
+              cell2.innerHTML = `<td><input type="date" id="terminate0" name="terminate`+count+`" style="width: 160px; text-align: center;" required></td>`;
+            }
+
+          cDate.addEventListener('change', function() {
+            tDate.min = this.value;
+            console.log('working');
+          });
+
+        function addRateDate(){
+            count++;
+            var newForm = `<tr><td><label for="base ` + count + `"></label><h6>BASE SUM</h6>
+                </td><td><label for="interest` + count + `"></label><h6>INTEREST RATE</h6></td>
+                </tr><tr><td><span class="input-symbol-euro"><input type="number" id="base`+count+`" name="base` + count + `" step ="any" style="width: 160px;
+                text-align: center;" required></span></td><td><span class="input-symbol-percentage"><input type="number" 
+                name="interest` + count +`" step ="any" list="interest" style="width: 160px; height: 30px; text-align: center;" required/><datalist id="interest">
+                <option value="8" selected="selected">Default (8%)</option><option value="10">Enhanced (10%)</option>
+                <option value="2">General Damages (2%)</option></datalist></span></td></tr>
+                </table><br><table class="center" id="center2"><tr><td><label for="commence`+count+`">
+                <h6>COMMENCING</h6></label></td><td><label for="terminate`+count+`"><h6>TERMINATING</h6>
+                </label></td></tr><td><label for="saver" style="display: none;"><h6>TERMINATING</h6></label></td><br>
+                <tr><td><input type="date" id="commence`+count+`" name="commence` +
+                count + `"style="width: 160px; text-align: center;" required></td>
+                <td><input type="date" id="terminate`+count+`" name="terminate` + count + `"style="width: 160px; 
+                text-align: center;" required></td><td><input type="text" id="saver" name="saver" style="display:none;" value="Select Finish" placeholder="Select Finish" 
+                onfocus="(this.type='date')" onblur="(this.type='text')"></td></tr>`;
+                document.getElementById("center2").innerHTML += newForm;
+        }
+
+
+        function addpoa(){
+            if (poacount == 0){
+                var insertpoa = `<tr><td><label for="receive"><h6>DATE RECEIVED</h6></label></td>
+                <td><label for="amount"><h6>PAYMENT ON ACCT</h6></label></td></tr><tr><td><input type="text" 
+                id="receive" name="receive" style="width: 160px; text-align: center;" 
+                placeholder="Select Payment Date" onfocus="(this.type='date')" onblur="(this.type='text')" 
+                required></td><td><span class="input-symbol-euro"><input type="number" id="amount" name="amount" step ="any" style="width: 160px;
+                text-align: center;"></span></td></tr>`;
+            } else{
+                var insertpoa = `<tr><td><input type="text" 
+                id="receive" name="receive" style="width: 160px; text-align: center;" 
+                placeholder="Select Payment Date" onfocus="(this.type='date')" onblur="(this.type='text')" 
+                required></td><td><span class="input-symbol-euro"><input type="number" id="amount" name="amount" style="width: 160px;
+                text-align: center;"></span></td></tr>`;
+                
+            }
+            poacount++;
+            document.getElementById("center3").innerHTML += insertpoa;
+            
+        }
+      </script>
+</body>
+</html>

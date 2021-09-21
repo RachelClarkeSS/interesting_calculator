@@ -16,10 +16,10 @@ app.get('/',function(req,res){
     res.sendFile(path.join(__dirname+'/index.html'));
   });
 
-app.post('/showAnswer', (req,res)=>{     
+app.post('/showAnswer', (req,res)=>{    
 
   var receiveobj = req.body.receive;
-  var amountobj = req.body.amount;
+  var amountobj = req.body.amount; 
 
   delete req.body.receive;
   delete req.body.amount;
@@ -31,11 +31,12 @@ app.post('/showAnswer', (req,res)=>{
   console.log(amountobj);
   var globalDays = 0;
   var globalInterest = 0;
+  var baseTotal = arrayOfObjects[0];
   
-  var base2 = 0;
-  var interest2 = 1;
-  var commence2 = 2;
-  var terminate2 = 3;
+  var base2 = -4;
+  var interest2 = -3;
+  var commence2 = -2;
+  var terminate2 = -1;
   var receiveIndex = 4;
 
   var firstLoop = arrayOfObjects.length / 4;
@@ -529,60 +530,188 @@ app.post('/showAnswer', (req,res)=>{
 
       } else if (multiplepoa == true){
           console.log('multiple poas, more than 2 dates, only 1 rate');
-          var newarray = [];
+          var combinedarray = [];
           var splitarray = [];
-          var loopcount = -2;
+          var allin = [];
+          var splitcount = 0;
+          var poacount = 2;
+          var balance = -1;
+          var paydate = 0;
+          var dateindex = 0;
 
           for (i=0; i<arrayOfObjects[2].length; i++){
-            newarray.push(arrayOfObjects[2][i])
+            combinedarray.push(arrayOfObjects[2][i])
           }
 
           for (i=0; i<arrayOfObjects[3].length; i++){
-            newarray.push(arrayOfObjects[3][i])
+            combinedarray.push(arrayOfObjects[3][i])
           }
 
           for (p=0; p<receiveobj.length; p++){
 
             for (i=0;i<arrayOfObjects[2].length;i++){
               if (receiveobj[p] > arrayOfObjects[2][i] && receiveobj[p] < arrayOfObjects[3][i+1]);
-                newarray.push(receiveobj[p]);
-                newarray.push(receiveobj[p]);
+                combinedarray.push(receiveobj[p]);
+                combinedarray.push(receiveobj[p]);
                 i=arrayOfObjects[2].length-1;
             }
-
           }
 
-          newarray.sort();
-
-          console.log('new array is:');
-          console.log(newarray);
-          console.log(receiveobj);
-          console.log(amountobj);
+          combinedarray.sort();
 
           for (p=0; p<receiveobj.length;p++){
-            for(i=0; i<newarray.length;i++){
-              if(receiveobj[p]==newarray[i]){
+            for(i=0; i<combinedarray.length;i=i+2){
+              if(receiveobj[p]==combinedarray[i]){
                 //take off payment on account and split date periods
-                console.log('payment on account received of'+' '+amountobj[p]+' '
-                +'on'+' '+newarray[i]+' '+'between'+' '+ newarray[i]+' '+'and'+' '+newarray[i+2]);
-                i=i+2;
-              }
-                
-              // } else{
-              //   //straight interest calculation with the two current date periods
-              //   console.log('no POA received between'+' '+newarray[i]+' '
-              //   +'and'+' '+newarray[i+1]);
-                
-              // }
+                baseTotal = baseTotal - amountobj[p];
+                splitarray.push(i);
+                splitarray.push(baseTotal);
+                splitarray.push(combinedarray[i]);
+                splitarray.push(combinedarray[i+1]);
+              } 
             }
           }
-   
-      }
-      
+        }
+
+
+        for (i=0; i < combinedarray.length; i++){
+          for (k=0; k < splitarray.length; k++){
+            if (combinedarray[i] == splitarray[poacount]){
+              if (combinedarray[i+1] == splitarray[poacount+1]){
+                console.log('poacount is'+' '+poacount);
+                allin.push(splitarray[poacount]);
+                allin.push(splitarray[poacount+1]);
+                arrayOfObjects[0] = arrayOfObjects[0] - amountobj[splitcount];
+                allin.push(arrayOfObjects[0]);
+                splitcount++;
+                poacount+=4;
+                k = splitarray.length-1;
+                i++;
+              }
+              
+            } else if (combinedarray[i] != splitarray[poacount]){
+                if (combinedarray[i+1] != splitarray[poacount+1]){
+                  allin.push(combinedarray[i]);
+                  allin.push(combinedarray[i+1]);
+                  allin.push(arrayOfObjects[0]);
+                  k = splitarray.length-1;
+                  i++;
+                }
+              }
+            }
+          }
+
+      var newbalance = allin[i];
+
+      for (i=2; i<allin.length; i=i+3){
+        newbalance = (allin[i]);
+
+        var date1y = allin[dateindex];
+        var date2y = allin[dateindex+1];
+
+        date1y = reformatDate(date1y);
+        date2y = reformatDate(date2y);
+
+        if (i==2){
+          newbalance = (allin[i]);
+          
+        }
+                
+        if (i>2){
+          //console.log(allin[i-3]);
+          if (allin[i] - allin[i - 3]){
+            balance = (allin[i-3] - allin[i]);
+            //console.log(`PoA received in the sum of £${balance} on ${receiveobj[paydate]}`);
+            results += "<tr><td colspan='4'><p style='color: green;'>£"+balance + " " + 
+                      "POA received on" + " " + date1y+"</p></td></tr>";
+            paydate++;
+          }
+          //console.log(allin[i]);  
+          
+        }
+        
+        
+        var diff1 = Math.floor((Date.parse(allin[dateindex+1]) - Date.parse(allin[dateindex])) / 86400000);
+
+        var answer1 = (arrayOfObjects[1] * newbalance) / 365;
+        answer1 = answer1 / 100;
+        answer1 = answer1 * diff1;
+        answer1 = answer1.toFixed(2);
+        answer1 = parseFloat(answer1);
+
+        globalDays += diff1;
+
+        if (i==2){
+          totalInterest = (answer1);
+        } else{
+          totalInterest += answer1;
+        }
+        
+
+        var answer9 = answer1.toLocaleString("en", {minimumFractionDigits: 2});
+
+        amountobj[paydate] = parseFloat(amountobj[paydate]);
+
+        var amountobj9 = newbalance.toLocaleString("en", {minimumFractionDigits: 2});
+        results += "<tr><td><p>" + 
+        date1y + " " + "to" + " " + date2y +"</p></td><td"+
+        "><p>" + diff1 + "</p></td>" + 
+        "<td><p>"+arrayOfObjects[1]+"%</p></td><td><p>£"+answer9+"</td></tr>";
+
+        dateindex += 3;
+        
+      } 
+
     //no poas, only 1 date, more than 1 rate
 
   } if (poas == false && morethantwodates == false && multiplerates == true){
       console.log("no poas, only 1 date, more than 1 rate");  
+
+      var firstLoop = arrayOfObjects.length / 4;
+
+      for (p=0; p < firstLoop; p++){
+        base2 += 4;
+        interest2 += 4;
+        commence2 += 4;
+        terminate2 += 4;
+
+        console.log("coming here");
+
+        //multiple rates, max 2 dates and no POA
+
+        if (Array.isArray(arrayOfObjects[commence2])==false && typeof receiveobj === 'undefined'){
+ 
+            var date1b = arrayOfObjects[commence2];
+            var date2b = arrayOfObjects[terminate2];
+            var diff = Math.floor((Date.parse(date2b) - Date.parse(date1b)) / 86400000);
+            var num1 = parseFloat(arrayOfObjects[base2]);
+            var num2 = parseFloat(arrayOfObjects[interest2]);
+            num2 = num2 / 100;
+            answer = (num2 * num1) / 365;
+            answer = answer * diff;
+            answer = answer.toFixed(2);
+            answer = parseFloat(answer);
+            var answer9 = answer.toLocaleString("en", {minimumFractionDigits: 2});
+      
+            globalDays += diff;
+
+            if (p==0){
+              totalInterest = answer;
+            } else{
+              totalInterest += answer;
+            }
+            
+
+            var date1y = reformatDate(arrayOfObjects[commence2]);
+            var date2z = reformatDate(arrayOfObjects[terminate2]);
+
+            results += "<tr><td><p>" + 
+            date1y + " " + "to" + " " + date2z +
+            "</p></td><td><p>" + diff + "</p></td><td><p>"+arrayOfObjects[interest2]+"%</p></td>"+
+            "<td><p>£" + answer9 + "</p></td><td></td></tr>";
+            console.log("more than 1 rate and only 2 dates and no POA")
+          }
+        }
 
     //has poas, only 1 date, more than 1 rate
 

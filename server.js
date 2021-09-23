@@ -1077,9 +1077,10 @@ app.post('/showAnswer', (req,res)=>{
   } if (poas == true && morethantwodates == true && multiplerates == true){
       console.log("has poas, more than 2 dates, more than 1 rate");  
 
+      //single poa
+
       if (singlepoa == true){
           console.log('only 1 poa, more than 2 dates, more than 1 rate');
-
 
           var alltogether = [];
           var arraytoarray = [];
@@ -1094,6 +1095,9 @@ app.post('/showAnswer', (req,res)=>{
           var terminate2 = -1;
 
           console.log(`firstloop is ${firstLoop}`);        
+
+          arraytoarray.push(receiveobj)
+          arraytoarray.push(receiveobj)
           
           for (p=0; p < firstLoop; p++){
             base2 += 4;
@@ -1125,9 +1129,9 @@ app.post('/showAnswer', (req,res)=>{
           let terminatecount = 3;
           let poacount = 0;
   
-          for (i=0; i<firstLoop; i=i+2){
+          for (i=0; i<arraytoarray.length; i=i+2){
   
-            if (arraytoarray[i]!=receiveobj || arraytoarray[i+1]!=receiveobj){
+            if (arraytoarray[i]!=receiveobj){
               alltogether.push(arraytoarray[i]);
               alltogether.push(arraytoarray[i+1]);
               alltogether.push(arrayOfObjects[basecount]);
@@ -1236,7 +1240,8 @@ app.post('/showAnswer', (req,res)=>{
         }
     
 
-    
+        //multiple poas
+
       } else if (multiplepoa == true){
           console.log('multiple poas, more than 2 dates, more than 1 rate');
 
@@ -1280,7 +1285,7 @@ app.post('/showAnswer', (req,res)=>{
                   if (i==arrayOfObjects[commence2].length - 1){
                     terminatedate.push(arrayOfObjects[terminate2][i]);
                   }
-                }
+                
             }
             arraytoarray.sort();
           }
@@ -1403,7 +1408,7 @@ app.post('/showAnswer', (req,res)=>{
               "</p></td><td><p>" + diff + "</p></td><td><p>"+alltogether[i+3]+"%</p></td>"+
               "<td><p>£" + answer9 + "</p></td><td></td></tr>";
 
-
+          }
           }
       }
   }
@@ -1433,44 +1438,35 @@ app.post('/showAnswer', (req,res)=>{
     <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap" rel="stylesheet">
     
     <style>
-
         body {
             text-align: center;
             background-color: #202020;
         }
-
-
         h2 {
             text-align: center;   
             color: #D8D8D8; 
             font-family: 'Alfa Slab One', cursive;
         }
-
         h6 {
             color: powderblue; 
             font-family: Arial, Helvetica, sans-serif;
         }
-
         h5 {
             color: rgb(255, 255, 255); 
             font-family: Arial, Helvetica, sans-serif;
         }
-
         p {
             color: rgb(255, 255, 255); 
             font-family: Arial, Helvetica, sans-serif;
         }
-
         .center {
             margin-left: auto;
             margin-right: auto;
         }
-
         .button {
           margin-top: 20px;
           margin-botton: 20px;
         }
-
         .achievements-wrapper { 
           width: 100%; 
           overflow-y: scroll;
@@ -1478,12 +1474,10 @@ app.post('/showAnswer', (req,res)=>{
       }
       
          .topnav {
-
          background-color: #333;
          overflow: hidden;
          position: sticky;
          }
-
          .topnav a {
          float: left;
          color: #f2f2f2;
@@ -1492,11 +1486,9 @@ app.post('/showAnswer', (req,res)=>{
          text-decoration: none;
          font-size: 17px;
          }
-
         #days{
             color: white;
         }
-
     </style>
     </head>
     <body>
@@ -1505,22 +1497,17 @@ app.post('/showAnswer', (req,res)=>{
             data-icon="typcn:calculator"></span>Legal 
             Interest Calculator</h2></a>
     </div>
-
     <div class="span4 achievements-wrapper">
         ${results}
     </div><br>
     <h5 style="color: grey; margin-left: 10%; margin-right: 10%;">The table above provides a quick summary of the figures.</h5><br>
     <h5 style="color: grey; margin-left: 10%; margin-right: 10%;">If you would like a more detailed breakdown, click on the PDF 
     button to see a comprehensive schedule.</h5><br>
-
     <button type="button" onclick="goBack()" class="btn btn-primary" 
     style="width: 45.2%; height: 45px; text-align: center; margin-bottom: 2%; margin-right: 2%;"><h5><b>Back
     </b></h5></button>
-
     <button type="button" onclick="goBack()" class="btn btn-light" style="width: 45.2%; height: 45px; text-align: center; margin-bottom: 2%;
     "><h5 style="color: red;"><b>PDF</b> <i class="fa fa-file-pdf-o"></i><b></h5></button>
-
-
     <script>
     function goBack() {
       window.history.back();

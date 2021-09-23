@@ -155,28 +155,30 @@
     </table>
 
     <table class="center" id="center3">
-        <br>
+        
     </table>
     <br>
     <tr>
         <td><input type="checkbox" id="adddate" name="adddate" value="addanother" onclick="addDate()"></td>
     </tr>
     <tr>
-        <td><label for="adddate"> <p style="color: yellowgreen;">Add New Date</p></label></td>
+        <td><label for="adddate"> <p style="color: yellowgreen;">Add Date</p></label></td>
     </tr>
     <tr>
         <td><input type="checkbox" id="addratedate" name="addratedate" value="addratedate" onclick="addRateDate()"></td>
     </tr>
     <tr>
-        <td><label for="addratedate"> <p style="color: yellowgreen;">Add New Rate</p></label></td>
+        <td><label for="addratedate"> <p style="color: yellowgreen;">Add Rate</p></label></td>
     </tr>
-    <tr><br>
+    <tr>
         <td><input type="checkbox" id="addPoA" name="addPoA" value="addPoA" onclick="addpoa()"></td>
     </tr>
     <tr>
-        <td><label for="addPoA"> <p style="color: yellowgreen;">Add Payment on Account</p></label></td>
+        <td><label for="addPoA"> <p style="color: yellowgreen;">Add POA</p></label></td>
     </tr><br>
     <tr>
+        <td><label for="addPoA"> <p style="color: #dc143c">Dates Must Be Entered Chronologically</p></label></td>
+    </tr><br>
     <tr>
         <td><input type="submit" class="btn btn-primary" value="Calculate" style="width:320px"></td>
     </tr>
@@ -243,7 +245,7 @@
 
         function addpoa(){
             if (poacount == 0){
-                var insertpoa = `<tr><td><label for="receive"><h6>DATE RECEIVED</h6></label></td>
+                var insertpoa = `<br><tr><td><label for="receive"><h6>DATE RECEIVED</h6></label></td>
                 <td><label for="amount"><h6>PAYMENT ON ACCT</h6></label></td></tr><tr><td><input type="text" 
                 id="receive" name="receive" style="width: 160px; text-align: center;" 
                 placeholder="Select Payment Date" onfocus="(this.type='date')" onblur="(this.type='text')" 

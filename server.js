@@ -50,6 +50,8 @@ app.post('/showAnswer', (req,res)=>{
   var countloops = 1;
   var reduced = false;
 
+  totalInterest = 0;
+
   var answer = (arrayOfObjects[1] * arrayOfObjects[0]) / 365;
   answer = answer / 100;
 
@@ -621,6 +623,9 @@ app.post('/showAnswer', (req,res)=>{
           //console.log(allin[i-3]);
           if (allin[i] - allin[i - 3]){
             balance = (allin[i-3] - allin[i]);
+            balance = balance.toFixed(2);
+            balance = parseFloat(balance);
+            balance = balance.toLocaleString("en", {minimumFractionDigits: 2});
             //console.log(`PoA received in the sum of £${balance} on ${receiveobj[paydate]}`);
             results += "<tr><td colspan='4'><p style='color: green;'>£"+balance + " " + 
                       "POA received on" + " " + date1y+"</p></td></tr>";
@@ -675,10 +680,6 @@ app.post('/showAnswer', (req,res)=>{
         commence2 += 4;
         terminate2 += 4;
 
-        console.log("coming here");
-
-        //multiple rates, max 2 dates and no POA
-
         if (Array.isArray(arrayOfObjects[commence2])==false && typeof receiveobj === 'undefined'){
  
             var date1b = arrayOfObjects[commence2];
@@ -701,7 +702,6 @@ app.post('/showAnswer', (req,res)=>{
               totalInterest += answer;
             }
             
-
             var date1y = reformatDate(arrayOfObjects[commence2]);
             var date2z = reformatDate(arrayOfObjects[terminate2]);
 
@@ -712,35 +712,699 @@ app.post('/showAnswer', (req,res)=>{
             console.log("more than 1 rate and only 2 dates and no POA")
           }
         }
-
-    //has poas, only 1 date, more than 1 rate
-
-  } if (poas == true && morethantwodates == false && multiplerates == true){
-      console.log("has poas, only 1 date, more than 1 rate");  
-      if (singlepoa == true){
-          console.log('only 1 poa, only 1 date, more than 1 rate');  
-      } else if (multiplepoa == true){
-          console.log('multiple poas, only 1 date, more than 1 rate');
-      }
-      
+ 
     //no poas, more than 2 dates, more than 1 rate
 
   } if (poas == false && morethantwodates == true && multiplerates == true){
       console.log("no poas, more than 2 dates, more than 1 rate");  
 
+      var firstLoop = arrayOfObjects.length / 4;
+      var base2 = -4;
+      var interest2 = -3;
+      var commence2 = -2;
+      var terminate2 = -1;
+
+      var firstLoop = arrayOfObjects.length / 4;
+
+      for (p=0; p < firstLoop; p++){
+        base2 += 4;
+        interest2 += 4;
+        commence2 += 4;
+        terminate2 += 4;
+
+        console.log("coming here");
+
+        console.log(Array.isArray(arrayOfObjects[commence2]));
+        console.log(`type of receiveobj = ${typeof receiveobj}`);
+
+      if (Array.isArray(arrayOfObjects[commence2])==true && typeof receiveobj === 'undefined'){
+
+          for (i=0; i < arrayOfObjects[commence2].length; i++){
+            let date1c = arrayOfObjects[commence2][i];
+            let date2c = arrayOfObjects[terminate2][i];
+            let diff = Math.floor((Date.parse(date2c) - Date.parse(date1c)) / 86400000);
+            let num1 = parseFloat(arrayOfObjects[base2]);
+            let num2 = parseFloat(arrayOfObjects[interest2]);
+            num2 = num2 / 100;
+            answer = (num2 * num1) / 365;
+            answer = answer * diff;
+            answer = answer.toFixed(2);
+            answer = parseFloat(answer);
+            console.log(answer);
+            var answer9 = answer.toLocaleString("en", {minimumFractionDigits: 2});
+      
+            globalDays += diff;
+            totalInterest += answer;
+
+            var date1y = reformatDate(arrayOfObjects[commence2][i]);
+            var date2z = reformatDate(arrayOfObjects[terminate2][i]);
+
+            results += "<tr><td><p>" + 
+            date1y + " " + "to" + " " + date2z +
+            "</p></td><td><p>" + diff + "</p></td><td><p>"+arrayOfObjects[interest2]+"%</p></td>"+
+            "<td><p>£" + answer9 + "</p></td><td></td></tr>";
+            console.log("multiple rates and multiple dates");
+
+          }
+      } else{
+        let date1c = arrayOfObjects[commence2];
+        let date2c = arrayOfObjects[terminate2];
+        let diff = Math.floor((Date.parse(date2c) - Date.parse(date1c)) / 86400000);
+        let num1 = parseFloat(arrayOfObjects[base2]);
+        let num2 = parseFloat(arrayOfObjects[interest2]);
+        num2 = num2 / 100;
+        answer = (num2 * num1) / 365;
+        answer = answer * diff;
+        answer = answer.toFixed(2);
+        answer = parseFloat(answer);
+        console.log(answer);
+        var answer9 = answer.toLocaleString("en", {minimumFractionDigits: 2});
+  
+        globalDays += diff;
+        totalInterest += answer;
+  
+        var date1y = reformatDate(arrayOfObjects[commence2]);
+        var date2z = reformatDate(arrayOfObjects[terminate2]);
+  
+        results += "<tr><td><p>" + 
+        date1y + " " + "to" + " " + date2z +
+        "</p></td><td><p>" + diff + "</p></td><td><p>"+arrayOfObjects[interest2]+"%</p></td>"+
+        "<td><p>£" + answer9 + "</p></td><td></td></tr>";
+        console.log("multiple rates and multiple dates");
+  
+        i = arrayOfObjects[commence2].length -1;
+
+      }
+    } 
+  
     //no poas, more than 2 dates, only 1 rate
 
   } if (poas == false && morethantwodates == true && multiplerates == false){
       console.log("no poas, more than 2 dates, only 1 rate");  
-  
+
+      var answer = ((arrayOfObjects[1] * arrayOfObjects[0]) / 365);
+ 
+      for (i=0; i<req.body.commence0.length; i++){
+        var date1a = req.body.commence0[i];
+        var date2a = req.body.terminate0[i];
+
+        var diff = Math.floor((Date.parse(date2a) - Date.parse(date1a)) / 86400000);
+        answer1 = answer / 100;
+        answer1 = answer1 * diff;
+        answer1 = answer1.toFixed(2);
+
+        answer1 = parseFloat(answer1);
+        totalInterest += answer1;
+        globalDays += diff;
+        var answer9 = answer1.toLocaleString("en", {minimumFractionDigits: 2});
+
+        var date1a = reformatDate(date1a);
+        var date2a = reformatDate(date2a);
+
+        results += "<tr><td><p>" + 
+        date1a + " " + "to" + " " + date2a +"</p></td><td"+
+        "><p>" + diff + "</p></td>" + 
+        "<td><p>"+arrayOfObjects[1]+"%</p></td><td><p>£"+answer9+"</td></tr>";
+        
+      }
+      
+    //has poas, only 1 date, more than 1 rate
+
+   } if (poas == true && morethantwodates == false && multiplerates == true){
+      console.log("has poas, only 1 date, more than 1 rate");  
+      console.log('second from last one')
+
+      if (singlepoa == true){
+          console.log('only 1 poa, only 1 date, more than 1 rate');  
+
+          for (p=0; p < arrayOfObjects[p]; p=p+4){
+            console.log(`base sum is ${arrayOfObjects[p]}`);
+            console.log(`interest is ${arrayOfObjects[p+1]}`);
+            var date1 = arrayOfObjects[p+2];
+            var date2 = arrayOfObjects[p+3];
+
+            if(receiveobj > arrayOfObjects[p+2] && receiveobj < arrayOfObjects[p+3]){
+              console.log(`${receiveobj} is greater than ${arrayOfObjects[p+2]} and less than ${arrayOfObjects[p+3]}`);
+              var date3 = receiveobj;
+              var diff1 = Math.floor((Date.parse(date3) - Date.parse(date1)) / 86400000);
+              var diff2 = Math.floor((Date.parse(date2) - Date.parse(date3)) / 86400000);
+              var answer = (arrayOfObjects[p+1] * arrayOfObjects[p]) / 365;
+              answer = answer / 100;
+              var answer1 = answer * diff1;
+              answer1 = answer1.toFixed(2);
+              answer1 = parseFloat(answer1);
+              var answer2 = (arrayOfObjects[p] - amountobj);
+              answer2 = (arrayOfObjects[p+1] * answer2) / 365;
+              answer2 = answer2 / 100;
+              answer2 = answer2 * diff2;
+              answer2 = answer2.toFixed(2);
+              answer2 = parseFloat(answer2);
+              globalDays += diff1 + diff2;
+              totalInterest += answer1 + answer2;
+              var answer9 = answer1.toLocaleString("en", {minimumFractionDigits: 2});
+              var answer10 = answer2.toLocaleString("en", {minimumFractionDigits: 2});
+              amountobj = parseFloat(amountobj);
+              var date1y = reformatDate(date1);
+              var date2z = reformatDate(date2);
+              var date3p = reformatDate(date3);
+              var amountobj9 = amountobj.toLocaleString("en", {minimumFractionDigits: 2});
+              results += "<tr><td><p>" + 
+              date1y + " " + "to" + " " + date3p +"</p></td><td"+
+              "><p>" + diff1 + "</p></td>" + 
+              "<td><p>"+arrayOfObjects[p+1]+"%</p></td><td><p>£"+answer9+"</td></tr>";
+              results += "<tr><td colspan='4'><p style='color: green;'>£"+amountobj9 + " " + 
+              "POA received on" + " " + date3p+"</p></td></tr>";
+              results += "<tr><td><p>" + 
+              date3p + " " + "to" + " " + date2z +"</p></td><td"+
+              "><p>" + diff2 + "</p></td>" + 
+              "<td><p>"+arrayOfObjects[p+1]+"%</p></td><td><p>£"+answer10+"</td></tr>";
+
+            } else{
+
+              console.log(`${receiveobj} is not greater than ${arrayOfObjects[p+2]} and not less than ${arrayOfObjects[p+3]}`);
+
+              var diff1 = Math.floor((Date.parse(date2) - Date.parse(date1)) / 86400000);
+              var answer = (arrayOfObjects[p+1] * arrayOfObjects[p]) / 365;
+              answer = answer / 100;
+              var answer1 = answer * diff1;
+              answer1 = answer1.toFixed(2);
+              answer1 = parseFloat(answer1);
+
+              globalDays += diff1;
+              totalInterest += answer1;
+
+              var answer9 = answer1.toLocaleString("en", {minimumFractionDigits: 2});
+
+              amountobj = parseFloat(amountobj);
+
+              var date1y = reformatDate(date1);
+              var date2z = reformatDate(date2);
+
+              var amountobj9 = amountobj.toLocaleString("en", {minimumFractionDigits: 2});
+
+              results += "<tr><td><p>" + 
+              date1y + " " + "to" + " " + date2z +"</p></td><td"+
+              "><p>" + diff1 + "</p></td>" + 
+              "<td><p>"+arrayOfObjects[p+1]+"%</p></td><td><p>£"+answer9+"</td></tr>";
+            }
+          }
+
+          console.log(arrayOfObjects);
+
+        
+      } else if (multiplepoa == true){
+          console.log('multiple poas, only 1 date, more than 1 rate');
+
+          var alltogether = [];
+          var arraytoarray = [];
+
+          var firstLoop = arrayOfObjects.length / 4;
+
+          var base2 = -4;
+          var interest2 = -3;
+          var commence2 = -2;
+          var terminate2 = -1;
+
+          console.log(`firstloop is ${firstLoop}`);
+
+          for (i=0; i<receiveobj.length; i++){
+            arraytoarray.push(receiveobj[i])
+            arraytoarray.push(receiveobj[i])
+          }
+
+          for (p=0; p < firstLoop; p++){
+            
+            base2 += 4;
+            interest2 += 4;
+            commence2 += 4;
+            terminate2 += 4;
+
+            if (Array.isArray(arrayOfObjects[commence2])==false){
+              arraytoarray.push(arrayOfObjects[commence2]);
+              arraytoarray.push(arrayOfObjects[terminate2]);
+
+            } else{
+
+                for (i=0; i < arrayOfObjects[commence2].length; i++){
+                  arraytoarray.push(arrayOfObjects[commence2]);
+                  arraytoarray.push(arrayOfObjects[terminate2]);
+                }
+            }
+            arraytoarray.sort();
+          }
+
+        }
+
+        let basecount = 0;
+        let interestcount = 1;
+        let currentbase = arrayOfObjects[basecount];
+        let currentinterest = arrayOfObjects[interestcount];
+        let terminatecount = 3;
+        let poacount = 0;
+        let finisharray = [];
+
+        for (i=0; i<arraytoarray.length; i=i+2){
+
+          if(arraytoarray[i-1] == arrayOfObjects[terminatecount]){
+            basecount += 4;
+            interestcount += 4;
+            terminatecount += 4;
+
+            console.log('changed');
+
+          }
+
+          if (arraytoarray[i]!=receiveobj[poacount]){
+            alltogether.push(arraytoarray[i]);
+            alltogether.push(arraytoarray[i+1]);
+            alltogether.push(arrayOfObjects[basecount]);
+            alltogether.push(arrayOfObjects[interestcount]);
+            
+          } else{
+            var reducethis = arrayOfObjects[basecount];
+            console.log(`reducethis = ${reducethis}`);
+            var poathis = amountobj[poacount];
+            console.log(`poathis = ${poathis}`);
+            reducethis = reducethis - poathis;
+            console.log(`reducethis - poathis = ${reducethis}`);
+            arrayOfObjects[basecount] = reducethis;
+            alltogether.push(arraytoarray[i]);
+            alltogether.push(arraytoarray[i+1]);
+            alltogether.push(arrayOfObjects[basecount]);
+            alltogether.push(arrayOfObjects[interestcount]);
+            poacount++;
+          }
+        }
+        
+
+        console.log('alltogether:')
+        console.log(alltogether);
+        console.log('arraytoarray:');
+        console.log(arraytoarray);
+        console.log('receiveobj:');
+        console.log(receiveobj);
+
+        var countpayments = 0;
+
+        for (i=0; i<alltogether.length; i=i+4){
+          if (alltogether[i] == receiveobj[countpayments]){
+            let date1 = alltogether[i];
+            let date2 = alltogether[i+1];
+            var date3 = receiveobj[countpayments];
+            var diff1 = Math.floor((Date.parse(date3) - Date.parse(date1)) / 86400000);
+            var diff2 = Math.floor((Date.parse(date2) - Date.parse(date3)) / 86400000);
+            var answer = (alltogether[i+3] * alltogether[i+2]) / 365;
+            answer = answer / 100;
+            var answer1 = answer * diff1;
+            answer1 = answer1.toFixed(2);
+            answer1 = parseFloat(answer1);
+            var answer2 = (alltogether[i+2]);
+            answer2 = (alltogether[i+3] * answer2) / 365;
+            answer2 = answer2 / 100;
+            answer2 = answer2 * diff2;
+            answer2 = answer2.toFixed(2);
+            answer2 = parseFloat(answer2);
+            globalDays += diff1 + diff2;
+            totalInterest += answer1 + answer2;
+            var answer9 = answer1.toLocaleString("en", {minimumFractionDigits: 2});
+            var answer10 = answer2.toLocaleString("en", {minimumFractionDigits: 2});
+            var thisamount = parseFloat(amountobj[countpayments]);
+            var date1y = reformatDate(date1);
+            var date2z = reformatDate(date2);
+            var date3p = reformatDate(date3);
+            var amountobj9 = thisamount.toLocaleString("en", {minimumFractionDigits: 2});
+            results += "<tr><td colspan='4'><p style='color: green;'>£"+amountobj9 + " " + 
+            "POA received on" + " " + date3p+"</p></td></tr>";
+            results += "<tr><td><p>" + 
+            date3p + " " + "to" + " " + date2z +"</p></td><td"+
+            "><p>" + diff2 + "</p></td>" + 
+            "<td><p>"+alltogether[i+3]+"%</p></td><td><p>£"+answer10+"</td></tr>";
+
+            countpayments++;
+
+          } else{
+
+              let date1c = alltogether[i];
+              let date2c = alltogether[i+1];
+              let diff = Math.floor((Date.parse(date2c) - Date.parse(date1c)) / 86400000);
+              let num1 = parseFloat(alltogether[i+2]);
+              let num2 = parseFloat(alltogether[i+3]);
+              num2 = num2 / 100;
+              var answer = (num2 * num1) / 365;
+              answer = answer * diff;
+              answer = answer.toFixed(2);
+              answer = parseFloat(answer);
+              console.log(answer);
+              var answer9 = answer.toLocaleString("en", {minimumFractionDigits: 2});
+        
+              globalDays += diff;
+              totalInterest += answer;
+        
+              var date1y = reformatDate(alltogether[i]);
+              var date2z = reformatDate(alltogether[i+1]);
+        
+              results += "<tr><td><p>" + 
+              date1y + " " + "to" + " " + date2z +
+              "</p></td><td><p>" + diff + "</p></td><td><p>"+alltogether[i+3]+"%</p></td>"+
+              "<td><p>£" + answer9 + "</p></td><td></td></tr>";
+
+
+          }
+        }
+
     //has poas, more than 2 dates, more than 1 rate
 
   } if (poas == true && morethantwodates == true && multiplerates == true){
       console.log("has poas, more than 2 dates, more than 1 rate");  
+
       if (singlepoa == true){
           console.log('only 1 poa, more than 2 dates, more than 1 rate');
+
+
+          var alltogether = [];
+          var arraytoarray = [];
+
+          var terminatedate = [];
+
+          var firstLoop = arrayOfObjects.length / 4;
+
+          var base2 = -4;
+          var interest2 = -3;
+          var commence2 = -2;
+          var terminate2 = -1;
+
+          console.log(`firstloop is ${firstLoop}`);        
+          
+          for (p=0; p < firstLoop; p++){
+            base2 += 4;
+            interest2 += 4;
+            commence2 += 4;
+            terminate2 += 4;
+
+            if (Array.isArray(arrayOfObjects[commence2])==false){
+              arraytoarray.push(arrayOfObjects[commence2]);
+              arraytoarray.push(arrayOfObjects[terminate2]);
+              terminatedate.push(arrayOfObjects[terminate2]);
+
+            } else{
+                for (i=0; i < arrayOfObjects[commence2].length; i++){
+                  arraytoarray.push(arrayOfObjects[commence2][i]);
+                  arraytoarray.push(arrayOfObjects[terminate2][i]);
+
+                  if (i==arrayOfObjects[commence2].length - 1){
+                    terminatedate.push(arrayOfObjects[terminate2][i]);
+                  }
+                }
+            }
+            arraytoarray.sort();
+          }
+         
+
+          let basecount = 0;
+          let interestcount = 1;
+          let terminatecount = 3;
+          let poacount = 0;
+  
+          for (i=0; i<firstLoop; i=i+2){
+  
+            if (arraytoarray[i]!=receiveobj || arraytoarray[i+1]!=receiveobj){
+              alltogether.push(arraytoarray[i]);
+              alltogether.push(arraytoarray[i+1]);
+              alltogether.push(arrayOfObjects[basecount]);
+              alltogether.push(arrayOfObjects[interestcount]);
+              
+            } else{
+              var reducethis = arrayOfObjects[basecount];
+              console.log(`reducethis = ${reducethis}`);
+              var poathis = amountobj;
+              console.log(`poathis = ${poathis}`);
+              reducethis = reducethis - poathis;
+              console.log(`reducethis - poathis = ${reducethis}`);
+              arrayOfObjects[basecount] = reducethis;
+              alltogether.push(arraytoarray[i]);
+              alltogether.push(arraytoarray[i+1]);
+              alltogether.push(arrayOfObjects[basecount]);
+              alltogether.push(arrayOfObjects[interestcount]);
+              poacount++;
+            }
+          
+  
+            for (k=0; k < terminatedate.length; k++){
+              if(arraytoarray[i]==terminatedate[k] || arraytoarray[i+1]==terminatedate[k]){
+  
+                basecount += 4;
+                interestcount += 4;
+                terminatecount += 4;
+  
+              }
+            }
+          }
+        
+          console.log('alltogether:')
+          console.log(alltogether);
+          console.log('arraytoarray:');
+          console.log(arraytoarray);
+          console.log('receiveobj:');
+          console.log(receiveobj);
+  
+          var countpayments = 0;
+  
+          for (i=0; i<alltogether.length; i=i+4){
+            if (alltogether[i] == receiveobj){
+              let date1 = alltogether[i];
+              let date2 = alltogether[i+1];
+              var date3 = receiveobj;
+              var diff1 = Math.floor((Date.parse(date3) - Date.parse(date1)) / 86400000);
+              var diff2 = Math.floor((Date.parse(date2) - Date.parse(date3)) / 86400000);
+              var answer = (alltogether[i+3] * alltogether[i+2]) / 365;
+              answer = answer / 100;
+              var answer1 = answer * diff1;
+              answer1 = answer1.toFixed(2);
+              answer1 = parseFloat(answer1);
+              var answer2 = (alltogether[i+2]);
+              answer2 = (alltogether[i+3] * answer2) / 365;
+              answer2 = answer2 / 100;
+              answer2 = answer2 * diff2;
+              answer2 = answer2.toFixed(2);
+              answer2 = parseFloat(answer2);
+              globalDays += diff1 + diff2;
+              totalInterest += answer1 + answer2;
+              var answer9 = answer1.toLocaleString("en", {minimumFractionDigits: 2});
+              var answer10 = answer2.toLocaleString("en", {minimumFractionDigits: 2});
+              var thisamount = parseFloat(amountobj);
+              var date1y = reformatDate(date1);
+              var date2z = reformatDate(date2);
+              var date3p = reformatDate(date3);
+              var amountobj9 = thisamount.toLocaleString("en", {minimumFractionDigits: 2});
+              results += "<tr><td colspan='4'><p style='color: green;'>£"+amountobj9 + " " + 
+              "POA received on" + " " + date3p+"</p></td></tr>";
+              results += "<tr><td><p>" + 
+              date3p + " " + "to" + " " + date2z +"</p></td><td"+
+              "><p>" + diff2 + "</p></td>" + 
+              "<td><p>"+alltogether[i+3]+"%</p></td><td><p>£"+answer10+"</td></tr>";
+  
+              countpayments++;
+  
+            } else{
+  
+                let date1c = alltogether[i];
+                let date2c = alltogether[i+1];
+                let diff = Math.floor((Date.parse(date2c) - Date.parse(date1c)) / 86400000);
+                let num1 = parseFloat(alltogether[i+2]);
+                let num2 = parseFloat(alltogether[i+3]);
+                num2 = num2 / 100;
+                var answer = (num2 * num1) / 365;
+                answer = answer * diff;
+                answer = answer.toFixed(2);
+                answer = parseFloat(answer);
+                console.log(answer);
+                var answer9 = answer.toLocaleString("en", {minimumFractionDigits: 2});
+          
+                globalDays += diff;
+                totalInterest += answer;
+          
+                var date1y = reformatDate(alltogether[i]);
+                var date2z = reformatDate(alltogether[i+1]);
+          
+                results += "<tr><td><p>" + 
+                date1y + " " + "to" + " " + date2z +
+                "</p></td><td><p>" + diff + "</p></td><td><p>"+alltogether[i+3]+"%</p></td>"+
+                "<td><p>£" + answer9 + "</p></td><td></td></tr>";
+  
+  
+            }
+        }
+    
+
+    
       } else if (multiplepoa == true){
           console.log('multiple poas, more than 2 dates, more than 1 rate');
+
+          var alltogether = [];
+          var arraytoarray = [];
+
+          var terminatedate = [];
+
+          var firstLoop = arrayOfObjects.length / 4;
+
+          var base2 = -4;
+          var interest2 = -3;
+          var commence2 = -2;
+          var terminate2 = -1;
+
+          console.log(`firstloop is ${firstLoop}`);
+
+          for (i=0; i<receiveobj.length; i++){
+            arraytoarray.push(receiveobj[i])
+            arraytoarray.push(receiveobj[i])
+          }
+
+          for (p=0; p < firstLoop; p++){
+            
+            base2 += 4;
+            interest2 += 4;
+            commence2 += 4;
+            terminate2 += 4;
+
+            if (Array.isArray(arrayOfObjects[commence2])==false){
+              arraytoarray.push(arrayOfObjects[commence2]);
+              arraytoarray.push(arrayOfObjects[terminate2]);
+              terminatedate.push(arrayOfObjects[terminate2]);
+
+            } else{
+
+                for (i=0; i < arrayOfObjects[commence2].length; i++){
+                  arraytoarray.push(arrayOfObjects[commence2][i]);
+                  arraytoarray.push(arrayOfObjects[terminate2][i]);
+
+                  if (i==arrayOfObjects[commence2].length - 1){
+                    terminatedate.push(arrayOfObjects[terminate2][i]);
+                  }
+                }
+            }
+            arraytoarray.sort();
+          }
+
+        }
+
+        console.log('terminate date:');
+        console.log(terminatedate);
+        let basecount = 0;
+        let interestcount = 1;
+        let currentbase = arrayOfObjects[basecount];
+        let currentinterest = arrayOfObjects[interestcount];
+        let terminatecount = 3;
+        let poacount = 0;
+        let finisharray = [];
+
+        for (i=0; i<arraytoarray.length; i=i+2){
+
+          if (arraytoarray[i]!=receiveobj[poacount]){
+            alltogether.push(arraytoarray[i]);
+            alltogether.push(arraytoarray[i+1]);
+            alltogether.push(arrayOfObjects[basecount]);
+            alltogether.push(arrayOfObjects[interestcount]);
+            
+          } else{
+            var reducethis = arrayOfObjects[basecount];
+            console.log(`reducethis = ${reducethis}`);
+            var poathis = amountobj[poacount];
+            console.log(`poathis = ${poathis}`);
+            reducethis = reducethis - poathis;
+            console.log(`reducethis - poathis = ${reducethis}`);
+            arrayOfObjects[basecount] = reducethis;
+            alltogether.push(arraytoarray[i]);
+            alltogether.push(arraytoarray[i+1]);
+            alltogether.push(arrayOfObjects[basecount]);
+            alltogether.push(arrayOfObjects[interestcount]);
+            poacount++;
+          }
+
+          for (k=0; k < terminatedate.length; k++){
+            if(arraytoarray[i]==terminatedate[k] || arraytoarray[i+1]==terminatedate[k]){
+
+              basecount += 4;
+              interestcount += 4;
+              terminatecount += 4;
+
+            }
+          }
+        }
+        
+
+        console.log('alltogether:')
+        console.log(alltogether);
+        console.log('arraytoarray:');
+        console.log(arraytoarray);
+        console.log('receiveobj:');
+        console.log(receiveobj);
+
+        var countpayments = 0;
+
+        for (i=0; i<alltogether.length; i=i+4){
+          if (alltogether[i] == receiveobj[countpayments]){
+            let date1 = alltogether[i];
+            let date2 = alltogether[i+1];
+            var date3 = receiveobj[countpayments];
+            var diff1 = Math.floor((Date.parse(date3) - Date.parse(date1)) / 86400000);
+            var diff2 = Math.floor((Date.parse(date2) - Date.parse(date3)) / 86400000);
+            var answer = (alltogether[i+3] * alltogether[i+2]) / 365;
+            answer = answer / 100;
+            var answer1 = answer * diff1;
+            answer1 = answer1.toFixed(2);
+            answer1 = parseFloat(answer1);
+            var answer2 = (alltogether[i+2]);
+            answer2 = (alltogether[i+3] * answer2) / 365;
+            answer2 = answer2 / 100;
+            answer2 = answer2 * diff2;
+            answer2 = answer2.toFixed(2);
+            answer2 = parseFloat(answer2);
+            globalDays += diff1 + diff2;
+            totalInterest += answer1 + answer2;
+            var answer9 = answer1.toLocaleString("en", {minimumFractionDigits: 2});
+            var answer10 = answer2.toLocaleString("en", {minimumFractionDigits: 2});
+            var thisamount = parseFloat(amountobj[countpayments]);
+            var date1y = reformatDate(date1);
+            var date2z = reformatDate(date2);
+            var date3p = reformatDate(date3);
+            var amountobj9 = thisamount.toLocaleString("en", {minimumFractionDigits: 2});
+            results += "<tr><td colspan='4'><p style='color: green;'>£"+amountobj9 + " " + 
+            "POA received on" + " " + date3p+"</p></td></tr>";
+            results += "<tr><td><p>" + 
+            date3p + " " + "to" + " " + date2z +"</p></td><td"+
+            "><p>" + diff2 + "</p></td>" + 
+            "<td><p>"+alltogether[i+3]+"%</p></td><td><p>£"+answer10+"</td></tr>";
+
+            countpayments++;
+
+          } else{
+
+              let date1c = alltogether[i];
+              let date2c = alltogether[i+1];
+              let diff = Math.floor((Date.parse(date2c) - Date.parse(date1c)) / 86400000);
+              let num1 = parseFloat(alltogether[i+2]);
+              let num2 = parseFloat(alltogether[i+3]);
+              num2 = num2 / 100;
+              var answer = (num2 * num1) / 365;
+              answer = answer * diff;
+              answer = answer.toFixed(2);
+              answer = parseFloat(answer);
+              console.log(answer);
+              var answer9 = answer.toLocaleString("en", {minimumFractionDigits: 2});
+        
+              globalDays += diff;
+              totalInterest += answer;
+        
+              var date1y = reformatDate(alltogether[i]);
+              var date2z = reformatDate(alltogether[i+1]);
+        
+              results += "<tr><td><p>" + 
+              date1y + " " + "to" + " " + date2z +
+              "</p></td><td><p>" + diff + "</p></td><td><p>"+alltogether[i+3]+"%</p></td>"+
+              "<td><p>£" + answer9 + "</p></td><td></td></tr>";
+
+
+          }
       }
   }
 

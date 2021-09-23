@@ -1292,6 +1292,11 @@ app.post('/showAnswer', (req,res)=>{
 
         }
 
+        arraytoarray.sort();
+
+        console.log('first arraytoarray:');
+        console.log(arraytoarray);
+
         console.log('terminate date:');
         console.log(terminatedate);
         let basecount = 0;

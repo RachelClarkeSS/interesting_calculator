@@ -21,6 +21,8 @@ app.post('/showAnswer', (req,res)=>{
   var receiveobj = req.body.receive;
   var amountobj = req.body.amount; 
 
+  var sortReceive = receiveobj
+
   delete req.body.receive;
   delete req.body.amount;
   delete req.body.saver; 
@@ -747,6 +749,8 @@ app.post('/showAnswer', (req,res)=>{
             let num2 = parseFloat(arrayOfObjects[interest2]);
             num2 = num2 / 100;
             answer = (num2 * num1) / 365;
+            console.log(`base equals ${num1}`);
+            console.log(`interest equals ${num2}`);
             answer = answer * diff;
             answer = answer.toFixed(2);
             answer = parseFloat(answer);
@@ -774,6 +778,8 @@ app.post('/showAnswer', (req,res)=>{
         let num2 = parseFloat(arrayOfObjects[interest2]);
         num2 = num2 / 100;
         answer = (num2 * num1) / 365;
+        console.log(`base equals ${num1}`);
+        console.log(`interest equals ${num2}`);
         answer = answer * diff;
         answer = answer.toFixed(2);
         answer = parseFloat(answer);

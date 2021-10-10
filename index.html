@@ -108,20 +108,23 @@
         Legal Interest Calculator</h2></a>
 </div>
 <br><br>
+<p style="color: #dc143c">Dates Must Be Entered Chronologically</p>
 <form action="/showAnswer" method="POST">
     <table class="center" id="center1">
         <tr>
-            <td><label for="base0"></label><h6>BASE SUM</h6></td>
+            <td><label for="base0"></label><h6>AMOUNT</h6></td>
             <td><label for="interest0"></label><h6>INTEREST RATE</h6></td>
         </tr>
         <tr>
             <td>
                 <span class="input-symbol-euro">
-                    <input type="number" id="base0" name="base0" step ="any" style="width: 160px; text-align: center;" required>
+                    <input type="number" onchange="setTwoNumberDecimal(this)"  
+                    id="base0" name="base0" step ="any" style="width: 160px; text-align: center;" required>
                 </span></td>
             <td>
                 <span class="input-symbol-percentage">
-                    <input type="number" name="interest0" step ="any" list="interest" style="width: 160px; height: 30px; text-align: center;" required/>
+                    <input type="number" name="interest0" step ="any" list="interest" style="width: 160px; 
+                    height: 30px; text-align: center;" required/>
                     <datalist id="interest">
                         <option value="8" selected="selected">Default Judgment (8%)</option>
                         <option value="10">Enhanced Interest (10%)</option>
@@ -149,7 +152,8 @@
                  required></td>
             <td><input type="date" id="terminate0" name="terminate0" style="width: 160px; text-align: center;"
                  required></td>
-            <td><input type="text" id="saver" name="saver" style="display:none;" value="Select Finish" placeholder="Select Finish" 
+            <td><input type="text" id="saver" name="saver" style="display:none;" value="Select Finish" 
+                placeholder="Select Finish" 
                 onfocus="(this.type='date')" onblur="(this.type='text')"></td>
         </tr>
     </table>
@@ -177,7 +181,10 @@
         <td><label for="addPoA"> <p style="color: yellowgreen;">Add POA</p></label></td>
     </tr><br>
     <tr>
-        <td><label for="addPoA"> <p style="color: #dc143c">Dates Must Be Entered Chronologically</p></label></td>
+        <td><label> <p onclick="deleteDate()" style="color: gold;">Remove Last Date/Rate</p></label></td>
+    </tr><br>
+    <tr>
+        <td><label> <p onclick="deletePOA()" style="color: gold;">Remove Last POA</p></label></td>
     </tr><br>
     <tr>
         <td><input type="submit" class="btn btn-primary" value="Calculate" style="width:320px"></td>
@@ -213,8 +220,10 @@
               var row = table.insertRow(-1);
               var cell1 = row.insertCell(0);
               var cell2 = row.insertCell(1);
-              cell1.innerHTML = `<td><input type="date" id="commence0" name="commence`+count+`" style="width: 160px; text-align: center;" required></td>`;
-              cell2.innerHTML = `<td><input type="date" id="terminate0" name="terminate`+count+`" style="width: 160px; text-align: center;" required></td>`;
+              cell1.innerHTML = `<td><input type="date" id="commence0" name="commence`+count+`" style="width: 160px; 
+                text-align: center;" required></td>`;
+              cell2.innerHTML = `<td><input type="date" id="terminate0" name="terminate`+count+`" style="width: 160px; 
+                text-align: center;" required></td>`;
             }
 
           cDate.addEventListener('change', function() {
@@ -222,13 +231,25 @@
             console.log('working');
           });
 
+          function deleteDate(){
+            var myobj = document.getElementById("center2");
+            myobj.deleteRow(-1);
+        }
+
+        function deletePOA(){
+            var myobj = document.getElementById("center3");
+            myobj.deleteRow(-1);
+        }
+
         function addRateDate(){
             count++;
-            var newForm = `<tr><td><label for="base ` + count + `"></label><h6>BASE SUM</h6>
+            var newForm = `<tr><td><label for="base ` + count + `"></label><h6>AMOUNT</h6>
                 </td><td><label for="interest` + count + `"></label><h6>INTEREST RATE</h6></td>
-                </tr><tr><td><span class="input-symbol-euro"><input type="number" id="base`+count+`" name="base` + count + `" step ="any" style="width: 160px;
+                </tr><tr><td><span class="input-symbol-euro"><input type="number" onchange="setTwoNumberDecimal(this)" 
+                    id="base`+count+`" name="base` + count + `" step ="any" style="width: 160px;
                 text-align: center;" required></span></td><td><span class="input-symbol-percentage"><input type="number" 
-                name="interest` + count +`" step ="any" list="interest" style="width: 160px; height: 30px; text-align: center;" required/><datalist id="interest">
+                name="interest` + count +`" step ="any" list="interest" style="width: 160px; height: 30px; text-align: center;" 
+                required/><datalist id="interest">
                 <option value="8" selected="selected">Default (8%)</option><option value="10">Enhanced (10%)</option>
                 <option value="2">General Damages (2%)</option></datalist></span></td></tr>
                 </table><br><table class="center" id="center2"><tr><td><label for="commence`+count+`">
@@ -237,7 +258,8 @@
                 <tr><td><input type="date" id="commence`+count+`" name="commence` +
                 count + `"style="width: 160px; text-align: center;" required></td>
                 <td><input type="date" id="terminate`+count+`" name="terminate` + count + `"style="width: 160px; 
-                text-align: center;" required></td><td><input type="text" id="saver" name="saver" style="display:none;" value="Select Finish" placeholder="Select Finish" 
+                text-align: center;" required></td><td><input type="text" id="saver" name="saver" style="display:none;" 
+                    value="Select Finish" placeholder="Select Finish" 
                 onfocus="(this.type='date')" onblur="(this.type='text')"></td></tr>`;
                 document.getElementById("center2").innerHTML += newForm;
         }
@@ -246,16 +268,16 @@
         function addpoa(){
             if (poacount == 0){
                 var insertpoa = `<br><tr><td><label for="receive"><h6>DATE RECEIVED</h6></label></td>
-                <td><label for="amount"><h6>PAYMENT ON ACCT</h6></label></td></tr><tr><td><input type="text" 
+                <td><label for="amount"><h6>PAYMENT ON ACCT</h6></label></td></tr><tr><td><input type="date" 
                 id="receive" name="receive" style="width: 160px; text-align: center;" 
-                placeholder="Select Payment Date" onfocus="(this.type='date')" onblur="(this.type='text')" 
-                required></td><td><span class="input-symbol-euro"><input type="number" id="amount" name="amount" step ="any" style="width: 160px;
+                required></td><td><span class="input-symbol-euro"><input type="number" onchange="setTwoNumberDecimal(this)"
+                id="amount" name="amount" step ="any" style="width: 160px;
                 text-align: center;"></span></td></tr>`;
             } else{
-                var insertpoa = `<tr><td><input type="text" 
-                id="receive" name="receive" style="width: 160px; text-align: center;" 
-                placeholder="Select Payment Date" onfocus="(this.type='date')" onblur="(this.type='text')" 
-                required></td><td><span class="input-symbol-euro"><input type="number" id="amount" name="amount" style="width: 160px;
+                var insertpoa = `<tr><td><input type="date" 
+                id="receive" name="receive" style="width: 160px; text-align: center;"  
+                required></td><td><span class="input-symbol-euro"><input type="number" onchange="setTwoNumberDecimal(this)"
+                id="amount" name="amount" style="width: 160px;
                 text-align: center;"></span></td></tr>`;
                 
             }
@@ -263,6 +285,10 @@
             document.getElementById("center3").innerHTML += insertpoa;
             
         }
+        function setTwoNumberDecimal(el) {
+            el.value = parseFloat(el.value).toFixed(2);
+        };
+
       </script>
 </body>
 </html>

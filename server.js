@@ -1794,6 +1794,9 @@ app.post('/showAnswer', (req,res)=>{
     integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.6/jspdf.plugin.autotable.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap" rel="stylesheet">
@@ -1870,7 +1873,7 @@ app.post('/showAnswer', (req,res)=>{
     <button type="button" onclick="goBack()" class="btn btn-primary" 
     style="width: 30%; height: 45px; text-align: center; margin-bottom: 2%; margin-right: 2%;"><h5><b>Back
     </b></h5></button>
-    <button type="button" onclick="exportTableToExcel('resultsExcel')" class="btn btn-success" style="width: 30%; height: 45px; text-align: center; margin-bottom: 2%; margin-right: 2%;"><h5 style="color: white;"><b>Excel</b> <i class="fa fa-file-excel-o"></i><b></h5></button>
+    <button type="button" id="export_button" class="btn btn-success" style="width: 30%; height: 45px; text-align: center; margin-bottom: 2%; margin-right: 2%;"><h5 style="color: white;"><b>Excel</b> <i class="fa fa-file-excel-o"></i><b></h5></button>
     <button type="button" onclick="createPDF()" class="btn btn-danger" style="width: 30%; height: 45px; text-align: center; margin-bottom: 2%;"><h5 style="color: white;"><b>PDF</b> <i class="fa fa-file-pdf-o"></i><b></h5></button>
     
     <div id="resultsExcel" class="span4 achievements-wrapper" style="display: none;">
@@ -1885,49 +1888,32 @@ app.post('/showAnswer', (req,res)=>{
       window.history.back();
     }
 
-      function exportTableToExcel(tableID, filename = ''){
-        var downloadLink;
-        var dataType = 'application/vnd.ms-excel';
-        var tableSelect = document.getElementById(tableID);
-        var tableHTML = tableSelect.outerHTML.replace(/ /g, '%20');
-        
-        // Specify file name
-        filename = filename?filename+'.xls':'Interest_breakdown.xls';
-        
-        // Create download link element
-        downloadLink = document.createElement("a");
-        
-        document.body.appendChild(downloadLink);
-        
-        if(navigator.msSaveOrOpenBlob){
-            var blob = new Blob(['\ufeff', tableHTML], {
-                type: dataType
-            });
-            navigator.msSaveOrOpenBlob( blob, filename);
-        }else{
-            // Create a link to the file
-            downloadLink.href = 'data:' + dataType + ', ' + tableHTML;
-        
-            // Setting the file name
-            downloadLink.download = filename;
-            
-            //triggering the function
-            downloadLink.click();
-        }
-    }
+      function html_table_to_excel(type)
+      {
+          var data = document.getElementById('resultsExcel');
+
+          var file = XLSX.utils.table_to_book(data, {sheet: "sheet1"});
+
+          XLSX.write(file, { bookType: type, bookSST: true, type: 'base64' });
+
+          XLSX.writeFile(file, 'file.' + type);
+      }
+
+      const export_button = document.getElementById('export_button');
+
+      export_button.addEventListener('click', () =>  {
+          html_table_to_excel('xlsx');
+      });
 
       function createPDF() {
         var sTable = document.getElementById('resultsPDF').innerHTML;
-
         var style = "<style>";
         style = style + "table {width: 100%;font: 17px Calibri;}";
         style = style + "table, th, td {border: solid 1px #DDD; border-collapse: collapse;";
         style = style + "padding: 2px 3px;text-align: center;}";
         style = style + "</style>";
-
         // CREATE A WINDOW OBJECT.
         var win = window.open('', '', 'height=700,width=700');
-
         win.document.write('<html><head>');
         win.document.write('<title>Profile</title>');   // <title> FOR PDF HEADER.
         win.document.write(style);          // ADD STYLE INSIDE THE HEAD TAG.
@@ -1935,10 +1921,8 @@ app.post('/showAnswer', (req,res)=>{
         win.document.write('<body>');
         win.document.write(sTable);         // THE TABLE CONTENTS INSIDE THE BODY TAG.
         win.document.write('</body></html>');
-
         win.document.close();   // CLOSE THE CURRENT WINDOW.
-
-        win.print();    // PRINT THE CONTENTS.
+        win.save();    // PRINT THE CONTENTS.
     }
     </script>                                          
     </body>

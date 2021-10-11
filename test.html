@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+    <html lang="en">
+    <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legal Interest Calculator</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" 
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            text-align: center;
+            background-color: #202020;
+        }
+        h2 {
+            text-align: center;   
+            color: #D8D8D8; 
+            font-family: 'Alfa Slab One', cursive;
+        }
+        h6 {
+            color: powderblue; 
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        h5 {
+            color: rgb(255, 255, 255); 
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        p {
+            color: rgb(255, 255, 255); 
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        .center {
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .button {
+          margin-top: 20px;
+          margin-botton: 20px;
+        }
+        .achievements-wrapper { 
+          width: 100%; 
+          overflow-y: scroll;
+          text-align: center;
+      }
+      
+         .topnav {
+         background-color: #333;
+         overflow: hidden;
+         position: sticky;
+         }
+         .topnav a {
+         float: left;
+         color: #f2f2f2;
+         text-align: center;
+         padding: 22px 5%;
+         text-decoration: none;
+         font-size: 17px;
+         }
+        #days{
+            color: white;
+        }
+    </style>
+    </head>
+    <body>
+    <div class="topnav fixed-top">
+        <a href="/" style="width: 100%; background-color: black;"><h2><span class="iconify" 
+            data-icon="typcn:calculator"></span>Legal 
+            Interest Calculator</h2></a>
+    </div>
+    <div id="results" class="span4 achievements-wrapper">
+        ${results}
+    </div><br>
+    <h5 style="color: grey; margin-left: 10%; margin-right: 10%;">The table above provides a quick summary of the figures.
+    </h5><br>
+    <h5 style="color: grey; margin-left: 10%; margin-right: 10%;">If you would like to export a detailed breakdown, 
+    click on the Excel or PDF 
+    buttons below.</h5><br>
+    <button type="button" onclick="goBack()" class="btn btn-primary" 
+    style="width: 30%; height: 45px; text-align: center; margin-bottom: 2%; margin-right: 2%;"><h5><b>Back
+    </b></h5></button>
+    <button type="button" onclick="goBack()" class="btn btn-primary" 
+    style="width: 30%; height: 45px; text-align: center; margin-bottom: 2%; margin-right: 2%;"><h5><b>Back
+    </b></h5></button>
+    <button type="button" onclick="exportTableToExcel(results)" class="btn btn-success" style="width: 30%; height: 45px; text-align: center; margin-bottom: 2%; margin-right: 2%;"><h5 style="color: white;"><b>Excel</b> <i class="fa fa-file-excel-o"></i><b></h5></button>
+    <button type="button" onclick="goBack()" class="btn btn-light" style="width: 30%; height: 45px; text-align: center; margin-bottom: 2%;"><h5 style="color: red;"><b>PDF</b> <i class="fa fa-file-pdf-o"></i><b></h5></button>
+    <script>
+    function goBack() {
+      window.history.back();
+    }
+
+      function exportTableToExcel(tableID, filename = ''){
+        var downloadLink;
+        var dataType = 'application/vnd.ms-excel';
+        var tableSelect = document.getElementById(tableID);
+        var tableHTML = tableSelect.outerHTML.replace(/ /g, '%20');
+        
+        // Specify file name
+        filename = filename?filename+'.xls':'excel_data.xls';
+        
+        // Create download link element
+        downloadLink = document.createElement("a");
+        
+        document.body.appendChild(downloadLink);
+        
+        if(navigator.msSaveOrOpenBlob){
+            var blob = new Blob(['\ufeff', tableHTML], {
+                type: dataType
+            });
+            navigator.msSaveOrOpenBlob( blob, filename);
+        }else{
+            // Create a link to the file
+            downloadLink.href = 'data:' + dataType + ', ' + tableHTML;
+        
+            // Setting the file name
+            downloadLink.download = filename;
+            
+            //triggering the function
+            downloadLink.click();
+        }
+    }
+    </script>                                          
+    </body>
+    </html>

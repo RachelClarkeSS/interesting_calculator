@@ -79,10 +79,13 @@
             padding-left:18px;
         }
         .input-symbol-euro:before {
-            position: absolute;
-            top: 0;
+            position:absolute;
+     
             content:"£";
-            left: 25px;
+            left: 5px;
+            font-size: x-large;
+            font-weight: bold;
+            bottom: -9px;
         }
 
         .input-symbol-percentage {
@@ -93,11 +96,26 @@
         }
         .input-symbol-percentage:after {
             position: absolute;
-            top: 0;
+    
             content:"%";
             left: 100px;
+            font-size: x-large;
+            font-weight: bold;
+            bottom: -9px;
         }
 
+        .featuredBtn.active {
+            background-color: goldenrod;
+            color: black;
+        }
+
+        .featuredBtn {
+
+            color: #8c8c8c;
+            background-color: #f4efeb;
+            border: none;
+            outline: none;
+        }
 
     </style>
 </head>
@@ -107,8 +125,14 @@
     <a href="/" style="width: 100%; background-color: black;"><h2 style="text-align: center;">
         Legal Interest Calculator</h2></a>
 </div>
-<br><br>
-<p style="color: #dc143c">Dates Must Be Entered Chronologically</p>
+<br>
+<p style="color: #dc143c">Dates Must Be Entered Chronologically</p><br>
+<button id='£' class="featuredBtn active" style="width: 35px;" onclick="currency('£')"><b>£</b></button>
+<button id='$' class="featuredBtn" style="width: 35px; margin-right: 0.01%;" onclick="currency('$')"><b>$</b></button>
+<button id='€' class="featuredBtn" style="width: 35px; margin-right: 0.01%" onclick="currency('€')"><b>€</b></button>
+<button id='¥' class="featuredBtn" style="width: 35px; margin-right: 0.01%" onclick="currency('¥')"><b>¥</b></button>
+<button id='Dh' class="featuredBtn" onclick="currency('Dh')"><b>Dh</b></button>
+<button id='₩' class="featuredBtn" style="width: 35px; margin-right: 0.01%" onclick="currency('₩')"><b>₩</b></button>
 <form action="/showAnswer" method="POST">
     <table class="center" id="center1">
         <tr>
@@ -162,35 +186,21 @@
         
     </table>
     <br>
-    <tr>
-        <td><input type="checkbox" id="adddate" name="adddate" value="addanother" onclick="addDate()"></td>
-    </tr>
-    <tr>
-        <td><label for="adddate"> <p style="color: yellowgreen;">Add Date</p></label></td>
-    </tr>
-    <tr>
-        <td><input type="checkbox" id="addratedate" name="addratedate" value="addratedate" onclick="addRateDate()"></td>
-    </tr>
-    <tr>
-        <td><label for="addratedate"> <p style="color: yellowgreen;">Add Rate</p></label></td>
-    </tr>
-    <tr>
-        <td><input type="checkbox" id="addPoA" name="addPoA" value="addPoA" onclick="addpoa()"></td>
-    </tr>
-    <tr>
-        <td><label for="addPoA"> <p style="color: yellowgreen;">Add POA</p></label></td>
-    </tr><br>
-    <tr>
-        <td><label> <p onclick="deleteDate()" style="color: gold;">Remove Last Date/Rate</p></label></td>
-    </tr><br>
-    <tr>
-        <td><label> <p onclick="deletePOA()" style="color: gold;">Remove Last POA</p></label></td>
-    </tr><br>
+ 
+    <h4 style="color: white;"><a onclick="addDate()" style="font-size: xx-large; color: green; margin-left: 8px; 
+        margin-right: 2px;"><b>+</b></a>DATE  
+        <a onclick="deleteDate()" style="font-size: xx-large; color: red;"><b>-</b></a><br>
+        <a onclick="addpoa()" style="font-size: xx-large; color: green; margin-left: 8px; margin-right: 5px;"><b>+</b></a>POAs
+        <a onclick="deletePOA()" style="font-size: xx-large; color: red;"><b>-</b></a><br>
+        <a onclick="addRateDate()" style="font-size: xx-large; color: green; margin-left: 8px; margin-right: 5px;"><b>+</b></a>RATE
+        <a onclick="deleteDate()" style="font-size: xx-large; color: red;"><b>-</b></a></h4><br>
     <tr>
         <td><input type="submit" class="btn btn-primary" value="Calculate" style="width:320px"></td>
     </tr>
     
 </table></form><br>
+
+
                                                     
       <script>
           $("#adddate").click(function(){
@@ -208,12 +218,26 @@
            $(".js-example-tags").select2({
               tags: true
             });
+        
+            $("button").click(function() {
+                $("button").removeClass("active");
+                $(this).addClass("active");
+            });
 
           var count = 0;
           var poacount = 0;
 
           var cDate = document.querySelector("#commence0");
           var tDate = document.querySelector("#terminate0");
+
+          function currency(money){
+            var newValue = money;//coming from somewhere
+            var add = '<style>.input-symbol-euro:before{content:"'+newValue+'"!important;}</style>';
+           
+            $('body').append(add);
+            document.getElementById('saver').value = newValue;
+            
+          }
 
           function addDate() {
               var table = document.getElementById("center2");
@@ -267,24 +291,33 @@
 
         function addpoa(){
             if (poacount == 0){
+                console.log('coming here');
                 var insertpoa = `<br><tr><td><label for="receive"><h6>DATE RECEIVED</h6></label></td>
                 <td><label for="amount"><h6>PAYMENT ON ACCT</h6></label></td></tr><tr><td><input type="date" 
                 id="receive" name="receive" style="width: 160px; text-align: center;" 
                 required></td><td><span class="input-symbol-euro"><input type="number" onchange="setTwoNumberDecimal(this)"
                 id="amount" name="amount" step ="any" style="width: 160px;
                 text-align: center;"></span></td></tr>`;
+
+                document.getElementById("center3").innerHTML = insertpoa;
+
             } else{
-                var insertpoa = `<tr><td><input type="date" 
+                var table = document.getElementById("center3");
+                var row = table.insertRow(-1);
+                var cell1 = row.insertCell(0);
+                var cell2 = row.insertCell(1);
+                cell1.innerHTML = `<td><input type="date" 
                 id="receive" name="receive" style="width: 160px; text-align: center;"  
-                required></td><td><span class="input-symbol-euro"><input type="number" onchange="setTwoNumberDecimal(this)"
+                required></td>`
+                cell2.innerHTML = `<td><span class="input-symbol-euro"><input type="number" onchange="setTwoNumberDecimal(this)"
                 id="amount" name="amount" style="width: 160px;
-                text-align: center;"></span></td></tr>`;
+                text-align: center;"></span></td>`;
                 
             }
             poacount++;
-            document.getElementById("center3").innerHTML += insertpoa;
             
         }
+
         function setTwoNumberDecimal(el) {
             el.value = parseFloat(el.value).toFixed(2);
         };

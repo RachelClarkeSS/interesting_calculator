@@ -16,7 +16,9 @@ app.get('/',function(req,res){
     res.sendFile(path.join(__dirname+'/index.html'));
   });
 
-app.post('/showAnswer', (req,res)=>{    
+app.post('/showAnswer', (req,res)=>{  
+  
+  var currency = req.body.saver;
 
   var receiveobj = req.body.receive;
   var amountobj = req.body.amount; 
@@ -125,14 +127,14 @@ app.post('/showAnswer', (req,res)=>{
     results += "<tr><td><p>" + 
     date1y + " " + "to" + " " + date2z +"</p></td><td"+
     "><p>" + diff + "</p></td>" + 
-    "<td><p>"+arrayOfObjects[1]+"%</p></td><td><p>£"+answer9+"</td></tr>";
+    "<td><p>"+arrayOfObjects[1]+"%</p></td><td><p>"+currency+answer9+"</td></tr>";
 
     resultsExport += "<tr><td><p>" + 
-    date1y + " " + "to" + " " + date2z +"</p></td><td><p>£"+newBase+"</p></td><td"+
+    date1y + " " + "to" + " " + date2z +"</p></td><td><p>"+currency+newBase+"</p></td><td"+
     "><p>" + diff + "</p></td>" + 
     "<td><p>"+arrayOfObjects[1]+"%</p></td>"+
     "<td><p>N/A</p></td><td><p>N/A</td>"+
-    "<td><p>£"+answer9+"</td></tr>";
+    "<td><p>"+currency+answer9+"</td></tr>";
 
     //has poas, only 1 date, only 1 rate
 
@@ -177,34 +179,34 @@ app.post('/showAnswer', (req,res)=>{
           results += "<tr><td><p>" + 
           date1y + " " + "to" + " " + date3p +"</p></td><td"+
           "><p>" + diff1 + "</p></td>" + 
-          "<td><p>"+req.body.interest0+"%</p></td><td><p>£"+answer9+"</td></tr>";
-          results += "<tr><td colspan='4'><p style='color: green;'>£"+amountobj9 + " " + 
+          "<td><p>"+req.body.interest0+"%</p></td><td><p>"+currency+answer9+"</td></tr>";
+          results += "<tr><td colspan='4'><p style='color: green;'>"+currency+amountobj9 + " " + 
           "POA received on" + " " + date3p+"</p></td></tr>";
           results += "<tr><td><p>" + 
           date3p + " " + "to" + " " + date2z +"</p></td><td"+
           "><p>" + diff2 + "</p></td>" + 
-          "<td><p>"+arrayOfObjects[1]+"%</p></td><td><p>£"+answer10+"</td></tr>";
+          "<td><p>"+arrayOfObjects[1]+"%</p></td><td><p>"+currency+answer10+"</td></tr>";
 
           resultsExport += "<tr>"+
           "<td><p>" + date1y + " " + "to" + " " + date3p +"</p></td>"+
-          "<td><p>£"+newBase+"</p></td>"+
+          "<td><p>"+currency+newBase+"</p></td>"+
           "<td><p>" + diff1 + "</p></td>" + 
           "<td><p>"+req.body.interest0+"%</p></td>"+
           "<td></td><td></td>"+
-          "<td><p>£"+answer9+"</td></tr>";
+          "<td><p>"+currency+answer9+"</td></tr>";
 
           resultsExport+= "<tr><td><p>Payment on Account</p></td>"+
           "<td></td><td></td><td></td>"+
           "<td><p>"+date3p+"</p></td>"+
-          "<td><p>£"+amountobj9+"</p></td>";
+          "<td><p>"+currency+amountobj9+"</p></td>";
 
           resultsExport += "<tr>"+
           "<td><p>" + date3p + " " + "to" + " " + date2z +"</p></td>"+
-          "<td><p>£"+reducedAmount+"</p></td>"+
+          "<td><p>"+currency+reducedAmount+"</p></td>"+
           "<td><p>" + diff2 + "</p></td>" + 
           "<td><p>"+req.body.interest0+"%</p></td>"+
           "<td></td><td></td>"+
-          "<td><p>£"+answer10+"</td></tr>";
+          "<td><p>"+currency+answer10+"</td></tr>";
         
 
         // multiple poas, only 1 date, only 1 rate
@@ -325,34 +327,34 @@ app.post('/showAnswer', (req,res)=>{
               results += "<tr><td><p>" + 
               date1y + " " + "to" + " " + date2y +"</p></td><td"+
               "><p>" + diff1 + "</p></td>" + 
-              "<td><p>"+arrayOfObjects[1]+"%</p></td><td><p>£"+answer9+"</td></tr>";
-              results += "<tr><td colspan='4'><p style='color: green;'>£"+poamount + " " + 
+              "<td><p>"+arrayOfObjects[1]+"%</p></td><td><p>"+currency+answer9+"</td></tr>";
+              results += "<tr><td colspan='4'><p style='color: green;'>"+currency+poamount + " " + 
               "POA received on" + " " + date3y+"</p></td></tr>";
               results += "<tr><td><p>" + 
               date3y + " " + "to" + " " + date4y +"</p></td><td"+
               "><p>" + diff2 + "</p></td>" + 
-              "<td><p>"+arrayOfObjects[1]+"%</p></td><td><p>£"+answer10+"</td></tr>";
+              "<td><p>"+arrayOfObjects[1]+"%</p></td><td><p>"+currency+answer10+"</td></tr>";
 
               resultsExport += "<tr>"+
               "<td><p>" + date1y + " " + "to" + " " + date2y +"</p></td>"+
-              "<td><p>£"+newBase+"</p></td>"+
+              "<td><p>"+currency+newBase+"</p></td>"+
               "<td><p>" + diff1 + "</p></td>" + 
               "<td><p>"+arrayOfObjects[1]+"%</p></td>"+
               "<td></td><td></td>"+
-              "<td><p>£"+answer9+"</td></tr>";
+              "<td><p>"+currency+answer9+"</td></tr>";
 
               resultsExport+= "<tr><td><p>Payment on Account</p></td>"+
               "<td></td><td></td><td></td>"+
               "<td><p>"+date3y+"</p></td>"+
-              "<td><p>£"+poamount+"</p></td>";
+              "<td><p>"+currency+poamount+"</p></td>";
 
               resultsExport += "<tr>"+
               "<td><p>" + date3y + " " + "to" + " " + date4y +"</p></td>"+
-              "<td><p>£"+reducedAmount+"</p></td>"+
+              "<td><p>"+currency+reducedAmount+"</p></td>"+
               "<td><p>" + diff2 + "</p></td>" + 
               "<td><p>"+arrayOfObjects[1]+"%</p></td>"+
               "<td></td><td></td>"+
-              "<td><p>£"+answer10+"</td></tr>";
+              "<td><p>"+currency+answer10+"</td></tr>";
 
               globalDays += diff1
               globalDays += diff2;
@@ -373,17 +375,17 @@ app.post('/showAnswer', (req,res)=>{
 
                   console.log('this if one being used');
                   amountcount ++;
-                  results += "<tr><td colspan='4'><p style='color: green;'>£"+poamount + " " + 
+                  results += "<tr><td colspan='4'><p style='color: green;'>"+currency+poamount + " " + 
                   "POA received on" + " " + date1y+"</p></td></tr>";
                   results += "<tr><td><p>" + 
                   date1y + " " + "to" + " " + date2y +"</p></td><td"+
                   "><p>" + diff1 + "</p></td>" + 
-                  "<td><p>"+arrayOfObjects[1]+"%</p></td><td><p>£"+answer11+"</td></tr>";
+                  "<td><p>"+arrayOfObjects[1]+"%</p></td><td><p>"+currency+answer11+"</td></tr>";
 
                   resultsExport+= "<tr><td><p>Payment on Account</p></td>"+
                   "<td></td><td></td><td></td>"+
                   "<td><p>"+date1y+"</p></td>"+
-                  "<td><p>£"+poamount+"</p></td>";
+                  "<td><p>"+currency+poamount+"</p></td>";
 
                   var newbalance = arrayOfObjects[0];
                   newbalance = parseFloat(newbalance);
@@ -391,11 +393,11 @@ app.post('/showAnswer', (req,res)=>{
 
                   resultsExport += "<tr>"+
                   "<td><p>" + date1y + " " + "to" + " " + date2y +"</p></td>"+
-                  "<td><p>£"+newbalance+"</p></td>"+
+                  "<td><p>"+currency+newbalance+"</p></td>"+
                   "<td><p>" + diff1 + "</p></td>" + 
                   "<td><p>"+arrayOfObjects[1]+"%</p></td>"+
                   "<td></td><td></td>"+
-                  "<td><p>£"+answer11+"</td></tr>";
+                  "<td><p>"+currency+answer11+"</td></tr>";
                   
                   arrayOfObjects[0] = arrayOfObjects[0] - amountobj[countloops+1];
                   var newbalance = arrayOfObjects[0];
@@ -416,25 +418,25 @@ app.post('/showAnswer', (req,res)=>{
                   poamount = parseFloat(poamount);
                   poamount = poamount.toLocaleString("en", {minimumFractionDigits: 2});
 
-                  results += "<tr><td colspan='4'><p style='color: green;'>£"+poamount + " " + 
+                  results += "<tr><td colspan='4'><p style='color: green;'>"+currency+poamount + " " + 
                   "POA received on" + " " + date3y+"</p></td></tr>";
                   results += "<tr><td><p>" + 
                   date3y + " " + "to" + " " + date4y +"</p></td><td"+
                   "><p>" + diff2 + "</p></td>" + 
-                  "<td><p>"+arrayOfObjects[1]+"%</p></td><td><p>£"+answer12+"</td></tr>";
+                  "<td><p>"+arrayOfObjects[1]+"%</p></td><td><p>"+currency+answer12+"</td></tr>";
 
                   resultsExport+= "<tr><td><p>Payment on Account</p></td>"+
                   "<td></td><td></td><td></td>"+
                   "<td><p>"+date3y+"</p></td>"+
-                  "<td><p>£"+poamount+"</p></td>";
+                  "<td><p>"+currency+poamount+"</p></td>";
 
                   resultsExport += "<tr>"+
                   "<td><p>" + date3y + " " + "to" + " " + date4y +"</p></td>"+
-                  "<td><p>£"+newbalance+"</p></td>"+
+                  "<td><p>"+currency+newbalance+"</p></td>"+
                   "<td><p>" + diff2 + "</p></td>" + 
                   "<td><p>"+arrayOfObjects[1]+"%</p></td>"+
                   "<td></td><td></td>"+
-                  "<td><p>£"+answer12+"</td></tr>";
+                  "<td><p>"+currency+answer12+"</td></tr>";
 
                   globalDays += diff1
                   globalDays += diff2;
@@ -487,25 +489,25 @@ app.post('/showAnswer', (req,res)=>{
                     poamount = parseFloat(poamount);
                     poamount = poamount.toLocaleString("en", {minimumFractionDigits: 2});
 
-                    results += "<tr><td colspan='4'><p style='color: green;'>£"+poamount + " " + 
+                    results += "<tr><td colspan='4'><p style='color: green;'>"+currency+poamount + " " + 
                     "POA received on" + " " + date1y+"</p></td></tr>";
                     results += "<tr><td><p>" + 
                     date1y + " " + "to" + " " + date2y +"</p></td><td"+
                     "><p>" + diff1 + "</p></td>" + 
-                    "<td><p>"+arrayOfObjects[1]+"%</p></td><td><p>£"+answer11+"</td></tr>";
+                    "<td><p>"+arrayOfObjects[1]+"%</p></td><td><p>"+currency+answer11+"</td></tr>";
 
                     resultsExport+= "<tr><td><p>Payment on Account</p></td>"+
                     "<td></td><td></td><td></td>"+
                     "<td><p>"+date1y+"</p></td>"+
-                    "<td><p>£"+poamount+"</p></td>";
+                    "<td><p>"+currency+poamount+"</p></td>";
 
                     resultsExport += "<tr>"+
                     "<td><p>" + date1y + " " + "to" + " " + date2y +"</p></td>"+
-                    "<td><p>£"+newbalance+"</p></td>"+
+                    "<td><p>"+currency+newbalance+"</p></td>"+
                     "<td><p>" + diff1 + "</p></td>" + 
                     "<td><p>"+arrayOfObjects[1]+"%</p></td>"+
                     "<td></td><td></td>"+
-                    "<td><p>£"+answer11+"</td></tr>";
+                    "<td><p>"+currency+answer11+"</td></tr>";
 
                     totalInterest += answer4;
                     
@@ -538,25 +540,25 @@ app.post('/showAnswer', (req,res)=>{
                     poamount = poamount.toLocaleString("en", {minimumFractionDigits: 2});
 
                     var answer11 = answer4.toLocaleString("en", {minimumFractionDigits: 2});
-                    results += "<tr><td colspan='4'><p style='color: green;'>£"+poamount + " " + 
+                    results += "<tr><td colspan='4'><p style='color: green;'>"+currency+poamount + " " + 
                     "POA received on" + " " + date1y+"</p></td></tr>";
                     results += "<tr><td><p>" + 
                     date1y + " " + "to" + " " + date2y +"</p></td><td"+
                     "><p>" + diff1 + "</p></td>" + 
-                    "<td><p>"+arrayOfObjects[1]+"%</p></td><td><p>£"+answer11+"</td></tr>";
+                    "<td><p>"+arrayOfObjects[1]+"%</p></td><td><p>"+currency+answer11+"</td></tr>";
 
                     resultsExport+= "<tr><td><p>Payment on Account</p></td>"+
                     "<td></td><td></td><td></td>"+
                     "<td><p>"+date1y+"</p></td>"+
-                    "<td><p>£"+poamount+"</p></td>";
+                    "<td><p>"+currency+poamount+"</p></td>";
 
                     resultsExport += "<tr>"+
                     "<td><p>" + date1y + " " + "to" + " " + date2y +"</p></td>"+
-                    "<td><p>£"+newbalance+"</p></td>"+
+                    "<td><p>"+currency+newbalance+"</p></td>"+
                     "<td><p>" + diff1 + "</p></td>" + 
                     "<td><p>"+arrayOfObjects[1]+"%</p></td>"+
                     "<td></td><td></td>"+
-                    "<td><p>£"+answer11+"</td></tr>";
+                    "<td><p>"+currency+answer11+"</td></tr>";
 
                     globalDays += diff1;
                     totalInterest += answer4;
@@ -616,29 +618,29 @@ app.post('/showAnswer', (req,res)=>{
             results += "<tr><td><p>" + 
             date1y + " " + "to" + " " + date3p +"</p></td><td"+
             "><p>" + diff1 + "</p></td>" + 
-            "<td><p>"+req.body.interest0+"%</p></td><td><p>£"+answer9+"</td></tr>";
-            results += "<tr><td colspan='4'><p style='color: green;'>£"+amountobj9 + " " + 
+            "<td><p>"+req.body.interest0+"%</p></td><td><p>"+currency+answer9+"</td></tr>";
+            results += "<tr><td colspan='4'><p style='color: green;'>"+currency+amountobj9 + " " + 
             "POA received on" + " " + date3p+"</p></td></tr>";
             results += "<tr><td><p>" + 
             date3p + " " + "to" + " " + date2z +"</p></td><td"+
             "><p>" + diff2 + "</p></td>" + 
-            "<td><p>"+req.body.interest0+"%</p></td><td><p>£"+answer10+"</td></tr>";
+            "<td><p>"+req.body.interest0+"%</p></td><td><p>"+currency+answer10+"</td></tr>";
 
             var newbalance = parseFloat(arrayOfObjects[0]);
             newbalance = newbalance.toLocaleString("en", {minimumFractionDigits: 2});
 
             resultsExport += "<tr>"+
             "<td><p>" + date1y + " " + "to" + " " + date3p +"</p></td>"+
-            "<td><p>£"+newbalance+"</p></td>"+
+            "<td><p>"+currency+newbalance+"</p></td>"+
             "<td><p>" + diff1 + "</p></td>" + 
             "<td><p>"+arrayOfObjects[1]+"%</p></td>"+
             "<td></td><td></td>"+
-            "<td><p>£"+answer9+"</td></tr>";
+            "<td><p>"+currency+answer9+"</td></tr>";
 
             resultsExport+= "<tr><td><p>Payment on Account</p></td>"+
             "<td></td><td></td><td></td>"+
             "<td><p>"+date3p+"</p></td>"+
-            "<td><p>£"+amountobj9+"</p></td>";
+            "<td><p>"+currency+amountobj9+"</p></td>";
 
             arrayOfObjects[0] = arrayOfObjects[0] - amountobj;
 
@@ -647,11 +649,11 @@ app.post('/showAnswer', (req,res)=>{
 
             resultsExport += "<tr>"+
             "<td><p>" + date3p + " " + "to" + " " + date2z +"</p></td>"+
-            "<td><p>£"+newbalance+"</p></td>"+
+            "<td><p>"+currency+newbalance+"</p></td>"+
             "<td><p>" + diff2 + "</p></td>" + 
             "<td><p>"+arrayOfObjects[1]+"%</p></td>"+
             "<td></td><td></td>"+
-            "<td><p>£"+answer10+"</td></tr>";
+            "<td><p>"+currency+answer10+"</td></tr>";
 
             if (i == 0){
               totalInterest = answer1 + answer2;
@@ -693,15 +695,15 @@ app.post('/showAnswer', (req,res)=>{
               results += "<tr><td><p>" + 
               date1y + " " + "to" + " " + date2z +
               "</p></td><td><p>" + diff + "</p></td><td><p>"+arrayOfObjects[1]+"%</p></td>"+
-              "<td><p>£" + answer9 + "</p></td><td></td></tr>";
+              "<td><p>"+currency + answer9 + "</p></td><td></td></tr>";
 
               resultsExport += "<tr>"+
               "<td><p>" + date1y + " " + "to" + " " + date2z +"</p></td>"+
-              "<td><p>£"+newbalance+"</p></td>"+
+              "<td><p>"+currency+newbalance+"</p></td>"+
               "<td><p>" + diff + "</p></td>" + 
               "<td><p>"+arrayOfObjects[1]+"%</p></td>"+
               "<td></td><td></td>"+
-              "<td><p>£"+answer9+"</td></tr>";
+              "<td><p>"+currency+answer9+"</td></tr>";
 
               if (i ==0){
                 totalInterest = answer;
@@ -811,12 +813,12 @@ app.post('/showAnswer', (req,res)=>{
             balance = parseFloat(balance);
             balance = balance.toLocaleString("en", {minimumFractionDigits: 2});
             //console.log(`PoA received in the sum of £${balance} on ${receiveobj[paydate]}`);
-            results += "<tr><td colspan='4'><p style='color: green;'>£"+balance + " " + 
+            results += "<tr><td colspan='4'><p style='color: green;'>"+currency+balance + " " + 
                       "POA received on" + " " + date1y+"</p></td></tr>";
             resultsExport+= "<tr><td><p>Payment on Account</p></td>"+
             "<td></td><td></td><td></td>"+
             "<td><p>"+date1y+"</p></td>"+
-            "<td><p>£"+balance+"</p></td>";
+            "<td><p>"+currency+balance+"</p></td>";
             paydate++;
           }
           //console.log(allin[i]);  
@@ -849,7 +851,7 @@ app.post('/showAnswer', (req,res)=>{
         results += "<tr><td><p>" + 
         date1y + " " + "to" + " " + date2y +"</p></td><td"+
         "><p>" + diff1 + "</p></td>" + 
-        "<td><p>"+arrayOfObjects[1]+"%</p></td><td><p>£"+answer9+"</td></tr>";
+        "<td><p>"+arrayOfObjects[1]+"%</p></td><td><p>"+currency+answer9+"</td></tr>";
 
         
         var newbalance = allin[i];
@@ -863,11 +865,11 @@ app.post('/showAnswer', (req,res)=>{
 
         resultsExport += "<tr>"+
         "<td><p>" + date1y + " " + "to" + " " + date2y +"</p></td>"+
-        "<td><p>£"+newbalance+"</p></td>"+
+        "<td><p>"+currency+newbalance+"</p></td>"+
         "<td><p>" + diff1 + "</p></td>" + 
         "<td><p>"+arrayOfObjects[1]+"%</p></td>"+
         "<td></td><td></td>"+
-        "<td><p>£"+answer9+"</td></tr>";
+        "<td><p>"+currency+answer9+"</td></tr>";
 
         dateindex += 3;
         
@@ -915,17 +917,17 @@ app.post('/showAnswer', (req,res)=>{
             results += "<tr><td><p>" + 
             date1y + " " + "to" + " " + date2z +
             "</p></td><td><p>" + diff + "</p></td><td><p>"+arrayOfObjects[interest2]+"%</p></td>"+
-            "<td><p>£" + answer9 + "</p></td><td></td></tr>";
+            "<td><p>"+currency + answer9 + "</p></td><td></td></tr>";
 
             num1 = num1.toFixed(2);
 
             resultsExport += "<tr>"+
             "<td><p>" + date1y + " " + "to" + " " + date2z +"</p></td>"+
-            "<td><p>£"+num1+"</p></td>"+
+            "<td><p>"+currency+num1+"</p></td>"+
             "<td><p>" + diff + "</p></td>" + 
             "<td><p>"+arrayOfObjects[interest2]+"%</p></td>"+
             "<td>N/A</td><td>N/A</td>"+
-            "<td><p>£"+answer9+"</td></tr>";
+            "<td><p>"+currency+answer9+"</td></tr>";
 
             console.log("more than 1 rate and only 2 dates and no POA")
           }
@@ -982,17 +984,17 @@ app.post('/showAnswer', (req,res)=>{
             results += "<tr><td><p>" + 
             date1y + " " + "to" + " " + date2z +
             "</p></td><td><p>" + diff + "</p></td><td><p>"+arrayOfObjects[interest2]+"%</p></td>"+
-            "<td><p>£" + answer9 + "</p></td><td></td></tr>";
+            "<td><p>"+currency + answer9 + "</p></td><td></td></tr>";
 
             num1 = num1.toFixed(2);
 
             resultsExport += "<tr>"+
             "<td><p>" + date1y + " " + "to" + " " + date2z +"</p></td>"+
-            "<td><p>£"+num1+"</p></td>"+
+            "<td><p>"+currency+num1+"</p></td>"+
             "<td><p>" + diff + "</p></td>" + 
             "<td><p>"+arrayOfObjects[interest2]+"%</p></td>"+
             "<td>N/A</td><td>N/A</td>"+
-            "<td><p>£"+answer9+"</td></tr>";
+            "<td><p>"+currency+answer9+"</td></tr>";
 
             console.log("multiple rates and multiple dates");
 
@@ -1022,17 +1024,17 @@ app.post('/showAnswer', (req,res)=>{
         results += "<tr><td><p>" + 
         date1y + " " + "to" + " " + date2z +
         "</p></td><td><p>" + diff + "</p></td><td><p>"+arrayOfObjects[interest2]+"%</p></td>"+
-        "<td><p>£" + answer9 + "</p></td><td></td></tr>";
+        "<td><p>"+currency + answer9 + "</p></td><td></td></tr>";
 
         num1 = num1.toFixed(2);
             
         resultsExport += "<tr>"+
         "<td><p>" + date1y + " " + "to" + " " + date2z +"</p></td>"+
-        "<td><p>£"+num1+"</p></td>"+
+        "<td><p>"+currency+num1+"</p></td>"+
         "<td><p>" + diff + "</p></td>" + 
         "<td><p>"+arrayOfObjects[interest2]+"%</p></td>"+
         "<td>N/A</td><td>N/A</td>"+
-        "<td><p>£"+answer9+"</td></tr>";
+        "<td><p>"+currency+answer9+"</td></tr>";
 
         console.log("multiple rates and multiple dates");
   
@@ -1068,18 +1070,18 @@ app.post('/showAnswer', (req,res)=>{
         results += "<tr><td><p>" + 
         date1a + " " + "to" + " " + date2a +"</p></td><td"+
         "><p>" + diff + "</p></td>" + 
-        "<td><p>"+arrayOfObjects[1]+"%</p></td><td><p>£"+answer9+"</td></tr>";
+        "<td><p>"+arrayOfObjects[1]+"%</p></td><td><p>"+currency+answer9+"</td></tr>";
 
         var num1 = arrayOfObjects[0];
         num1 = num1.toLocaleString("en", {minimumFractionDigits: 2});
             
         resultsExport += "<tr>"+
         "<td><p>" + date1a + " " + "to" + " " + date2a +"</p></td>"+
-        "<td><p>£"+num1+"</p></td>"+
+        "<td><p>"+currency+num1+"</p></td>"+
         "<td><p>" + diff + "</p></td>" + 
         "<td><p>"+arrayOfObjects[1]+"%</p></td>"+
         "<td>N/A</td><td>N/A</td>"+
-        "<td><p>£"+answer9+"</td></tr>";
+        "<td><p>"+currency+answer9+"</td></tr>";
         
       }
       
@@ -1126,36 +1128,36 @@ app.post('/showAnswer', (req,res)=>{
               results += "<tr><td><p>" + 
               date1y + " " + "to" + " " + date3p +"</p></td><td"+
               "><p>" + diff1 + "</p></td>" + 
-              "<td><p>"+arrayOfObjects[p+1]+"%</p></td><td><p>£"+answer9+"</td></tr>";
-              results += "<tr><td colspan='4'><p style='color: green;'>£"+amountobj9 + " " + 
+              "<td><p>"+arrayOfObjects[p+1]+"%</p></td><td><p>"+currency+answer9+"</td></tr>";
+              results += "<tr><td colspan='4'><p style='color: green;'>"+currency+amountobj9 + " " + 
               "POA received on" + " " + date3p+"</p></td></tr>";
               results += "<tr><td><p>" + 
               date3p + " " + "to" + " " + date2z +"</p></td><td"+
               "><p>" + diff2 + "</p></td>" + 
-              "<td><p>"+arrayOfObjects[p+1]+"%</p></td><td><p>£"+answer10+"</td></tr>";
+              "<td><p>"+arrayOfObjects[p+1]+"%</p></td><td><p>"+currency+answer10+"</td></tr>";
 
               resultsExport += "<tr>"+
               "<td><p>" + date1y + " " + "to" + " " + date3p +"</p></td>"+
-              "<td><p>£"+arrayOfObjects[p]+"</p></td>"+
+              "<td><p>"+currency+arrayOfObjects[p]+"</p></td>"+
               "<td><p>" + diff1 + "</p></td>" + 
               "<td><p>"+arrayOfObjects[p+1]+"%</p></td>"+
               "<td></td><td></td>"+
-              "<td><p>£"+answer9+"</td></tr>";
+              "<td><p>"+currency+answer9+"</td></tr>";
 
               resultsExport+= "<tr><td><p>Payment on Account</p></td>"+
               "<td></td><td></td><td></td>"+
               "<td><p>"+date3p+"</p></td>"+
-              "<td><p>£"+amountobj9+"</p></td>";
+              "<td><p>"+currency+amountobj9+"</p></td>";
 
               arrayOfObjects[p] = arrayOfObjects[p] - amountobj;
 
               resultsExport += "<tr>"+
               "<td><p>" + date3p + " " + "to" + " " + date2z +"</p></td>"+
-              "<td><p>£"+arrayOfObjects[p]+"</p></td>"+
+              "<td><p>"+currency+arrayOfObjects[p]+"</p></td>"+
               "<td><p>" + diff2 + "</p></td>" + 
               "<td><p>"+arrayOfObjects[p+1]+"%</p></td>"+
               "<td></td><td></td>"+
-              "<td><p>£"+answer10+"</td></tr>";
+              "<td><p>"+currency+answer10+"</td></tr>";
 
               
 
@@ -1186,15 +1188,15 @@ app.post('/showAnswer', (req,res)=>{
               results += "<tr><td><p>" + 
               date1y + " " + "to" + " " + date2z +"</p></td><td"+
               "><p>" + diff1 + "</p></td>" + 
-              "<td><p>"+arrayOfObjects[p+1]+"%</p></td><td><p>£"+answer9+"</td></tr>";
+              "<td><p>"+arrayOfObjects[p+1]+"%</p></td><td><p>"+currency+answer9+"</td></tr>";
 
               resultsExport += "<tr>"+
               "<td><p>" + date1y + " " + "to" + " " + date2z +"</p></td>"+
-              "<td><p>£"+arrayOfObjects[p]+"</p></td>"+
+              "<td><p>"+currency+arrayOfObjects[p]+"</p></td>"+
               "<td><p>" + diff1 + "</p></td>" + 
               "<td><p>"+arrayOfObjects[p+1]+"%</p></td>"+
               "<td></td><td></td>"+
-              "<td><p>£"+answer9+"</td></tr>";
+              "<td><p>"+currency+answer9+"</td></tr>";
 
 
             }
@@ -1322,25 +1324,25 @@ app.post('/showAnswer', (req,res)=>{
             var date2z = reformatDate(date2);
             var date3p = reformatDate(date3);
             var amountobj9 = thisamount.toLocaleString("en", {minimumFractionDigits: 2});
-            results += "<tr><td colspan='4'><p style='color: green;'>£"+amountobj9 + " " + 
+            results += "<tr><td colspan='4'><p style='color: green;'>"+currency+amountobj9 + " " + 
             "POA received on" + " " + date3p+"</p></td></tr>";
             results += "<tr><td><p>" + 
             date3p + " " + "to" + " " + date2z +"</p></td><td"+
             "><p>" + diff2 + "</p></td>" + 
-            "<td><p>"+alltogether[i+3]+"%</p></td><td><p>£"+answer10+"</td></tr>";
+            "<td><p>"+alltogether[i+3]+"%</p></td><td><p>"+currency+answer10+"</td></tr>";
 
             resultsExport+= "<tr><td><p>Payment on Account</p></td>"+
             "<td></td><td></td><td></td>"+
             "<td><p>"+date3p+"</p></td>"+
-            "<td><p>£"+amountobj9+"</p></td>";
+            "<td><p>"+currency+amountobj9+"</p></td>";
 
             resultsExport += "<tr>"+
             "<td><p>" + date3p + " " + "to" + " " + date2z +"</p></td>"+
-            "<td><p>£"+alltogether[i+2]+"</p></td>"+
+            "<td><p>"+currency+alltogether[i+2]+"</p></td>"+
             "<td><p>" + diff2 + "</p></td>" + 
             "<td><p>"+alltogether[i+3]+"%</p></td>"+
             "<td></td><td></td>"+
-            "<td><p>£"+answer10+"</td></tr>";
+            "<td><p>"+currency+answer10+"</td></tr>";
 
             countpayments++;
 
@@ -1368,15 +1370,15 @@ app.post('/showAnswer', (req,res)=>{
               results += "<tr><td><p>" + 
               date1y + " " + "to" + " " + date2z +
               "</p></td><td><p>" + diff + "</p></td><td><p>"+alltogether[i+3]+"%</p></td>"+
-              "<td><p>£" + answer9 + "</p></td><td></td></tr>";
+              "<td><p>"+currency + answer9 + "</p></td><td></td></tr>";
 
               resultsExport += "<tr>"+
               "<td><p>" + date1y + " " + "to" + " " + date2z +"</p></td>"+
-              "<td><p>£"+alltogether[i+2]+"</p></td>"+
+              "<td><p>"+currency+alltogether[i+2]+"</p></td>"+
               "<td><p>" + diff + "</p></td>" + 
               "<td><p>"+alltogether[i+3]+"%</p></td>"+
               "<td></td><td></td>"+
-              "<td><p>£"+answer9+"</td></tr>";
+              "<td><p>"+currency+answer9+"</td></tr>";
 
           }
         }
@@ -1509,25 +1511,25 @@ app.post('/showAnswer', (req,res)=>{
               var date2z = reformatDate(date2);
               var date3p = reformatDate(date3);
               var amountobj9 = thisamount.toLocaleString("en", {minimumFractionDigits: 2});
-              results += "<tr><td colspan='4'><p style='color: green;'>£"+amountobj9 + " " + 
+              results += "<tr><td colspan='4'><p style='color: green;'>"+currency+amountobj9 + " " + 
               "POA received on" + " " + date3p+"</p></td></tr>";
               results += "<tr><td><p>" + 
               date3p + " " + "to" + " " + date2z +"</p></td><td"+
               "><p>" + diff2 + "</p></td>" + 
-              "<td><p>"+alltogether[i+3]+"%</p></td><td><p>£"+answer10+"</td></tr>";
+              "<td><p>"+alltogether[i+3]+"%</p></td><td><p>"+currency+answer10+"</td></tr>";
 
               resultsExport+= "<tr><td><p>Payment on Account</p></td>"+
               "<td></td><td></td><td></td>"+
               "<td><p>"+date3p+"</p></td>"+
-              "<td><p>£"+amountobj9+"</p></td>";
+              "<td><p>"+currency+amountobj9+"</p></td>";
 
               resultsExport += "<tr>"+
               "<td><p>" + date3p + " " + "to" + " " + date2z +"</p></td>"+
-              "<td><p>£"+alltogether[i+2]+"</p></td>"+
+              "<td><p>"+currency+alltogether[i+2]+"</p></td>"+
               "<td><p>" + diff2 + "</p></td>" + 
               "<td><p>"+alltogether[i+3]+"%</p></td>"+
               "<td></td><td></td>"+
-              "<td><p>£"+answer10+"</td></tr>";
+              "<td><p>"+currency+answer10+"</td></tr>";
   
               countpayments++;
   
@@ -1555,15 +1557,15 @@ app.post('/showAnswer', (req,res)=>{
                 results += "<tr><td><p>" + 
                 date1y + " " + "to" + " " + date2z +
                 "</p></td><td><p>" + diff + "</p></td><td><p>"+alltogether[i+3]+"%</p></td>"+
-                "<td><p>£" + answer9 + "</p></td><td></td></tr>";
+                "<td><p>"+currency + answer9 + "</p></td><td></td></tr>";
 
                 resultsExport += "<tr>"+
                 "<td><p>" + date1y + " " + "to" + " " + date2z +"</p></td>"+
-                "<td><p>£"+alltogether[i+2]+"</p></td>"+
+                "<td><p>"+currency+alltogether[i+2]+"</p></td>"+
                 "<td><p>" + diff + "</p></td>" + 
                 "<td><p>"+alltogether[i+3]+"%</p></td>"+
                 "<td></td><td></td>"+
-                "<td><p>£"+answer9+"</td></tr>";
+                "<td><p>"+currency+answer9+"</td></tr>";
   
   
             }
@@ -1708,25 +1710,25 @@ app.post('/showAnswer', (req,res)=>{
             var date2z = reformatDate(date2);
             var date3p = reformatDate(date3);
             var amountobj9 = thisamount.toLocaleString("en", {minimumFractionDigits: 2});
-            results += "<tr><td colspan='4'><p style='color: green;'>£"+amountobj9 + " " + 
+            results += "<tr><td colspan='4'><p style='color: green;'>"+currency+amountobj9 + " " + 
             "POA received on" + " " + date3p+"</p></td></tr>";
             results += "<tr><td><p>" + 
             date3p + " " + "to" + " " + date2z +"</p></td><td"+
             "><p>" + diff2 + "</p></td>" + 
-            "<td><p>"+alltogether[i+3]+"%</p></td><td><p>£"+answer10+"</td></tr>";
+            "<td><p>"+alltogether[i+3]+"%</p></td><td><p>"+currency+answer10+"</td></tr>";
 
             resultsExport+= "<tr><td><p>Payment on Account</p></td>"+
             "<td></td><td></td><td></td>"+
             "<td><p>"+date3p+"</p></td>"+
-            "<td><p>£"+amountobj9+"</p></td>";
+            "<td><p>"+currency+amountobj9+"</p></td>";
 
             resultsExport += "<tr>"+
             "<td><p>" + date3p + " " + "to" + " " + date2z +"</p></td>"+
-            "<td><p>£"+alltogether[i+2]+"</p></td>"+
+            "<td><p>"+currency+alltogether[i+2]+"</p></td>"+
             "<td><p>" + diff2 + "</p></td>" + 
             "<td><p>"+alltogether[i+3]+"%</p></td>"+
             "<td></td><td></td>"+
-            "<td><p>£"+answer10+"</td></tr>";
+            "<td><p>"+currency+answer10+"</td></tr>";
 
             countpayments++;
 
@@ -1754,15 +1756,15 @@ app.post('/showAnswer', (req,res)=>{
               results += "<tr><td><p>" + 
               date1y + " " + "to" + " " + date2z +
               "</p></td><td><p>" + diff + "</p></td><td><p>"+alltogether[i+3]+"%</p></td>"+
-              "<td><p>£" + answer9 + "</p></td><td></td></tr>";
+              "<td><p>"+currency + answer9 + "</p></td><td></td></tr>";
 
               resultsExport += "<tr>"+
               "<td><p>" + date1y + " " + "to" + " " + date2z +"</p></td>"+
-              "<td><p>£"+alltogether[i+2]+"</p></td>"+
+              "<td><p>"+currency+alltogether[i+2]+"</p></td>"+
               "<td><p>" + diff + "</p></td>" + 
               "<td><p>"+alltogether[i+3]+"%</p></td>"+
               "<td></td><td></td>"+
-              "<td><p>£"+answer9+"</td></tr>";
+              "<td><p>"+currency+answer9+"</td></tr>";
 
           }
         }
@@ -1776,11 +1778,11 @@ app.post('/showAnswer', (req,res)=>{
     daily1 = daily.toLocaleString("en", {minimumFractionDigits: 6});
   
     results += "<tr><td><p><b>Totals</b></p></td><td><p><b>" + globalDays + "</b></p></td>"+
-    "<td><p><b></b></p></td><td><p><b>£" + totalSum9 + "</b></p></td></tr></table>";
+    "<td><p><b></b></p></td><td><p><b>"+currency + totalSum9 + "</b></p></td></tr></table>";
 
     resultsExport += "<tr><td><p><b>Totals</b></p></td><td><p><b>"+
     "</b></p></td><td><p><b>" + globalDays + "</b></p></td>"+
-    "<td><p><b></b></p></td><td></td><td></td><td><p><b>£" + 
+    "<td><p><b></b></p></td><td></td><td></td><td><p><b>"+currency + 
     totalSum9 + "</b></p></td></tr></table>";
     
     res.send(`<!DOCTYPE html>

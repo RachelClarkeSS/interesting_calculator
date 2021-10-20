@@ -176,6 +176,9 @@
                  required></td>
             <td><input type="date" id="terminate0" name="terminate0" style="width: 160px; text-align: center;"
                  required></td>
+            
+        </tr>
+        <tr>
             <td><input type="text" id="saver" name="saver" style="display:none;" value="£" 
                 placeholder="Select Finish" 
                 onfocus="(this.type='date')" onblur="(this.type='text')"></td>
@@ -188,7 +191,6 @@
     <table class="center" id="center4">
         
     </table>
-    <br>
  
     <h4 style="color: white;"><a onclick="addDate()" style="font-size: xx-large; color: green; margin-left: 8px; 
         margin-right: 2px;"><b>+</b></a>DATE  
@@ -246,7 +248,13 @@
           }
 
           function addDate() {
-              var table = document.getElementById("center2");
+
+            if (count == 0){
+                var table = document.getElementById("center2");
+            } else{
+                var table = document.getElementById("center3");
+            }
+              
               var row = table.insertRow(-1);
               var cell1 = row.insertCell(0);
               var cell2 = row.insertCell(1);
@@ -307,7 +315,7 @@
                 id="receive" name="receive" style="width: 160px; text-align: center;" 
                 required></td><td><span class="input-symbol-euro"><input type="number" onchange="setTwoNumberDecimal(this)"
                 id="amount" name="amount" step ="any" style="width: 160px;
-                text-align: center;"></span></td></tr>`;
+                text-align: center;"></span></td></tr><br>`;
 
                 document.getElementById("center4").innerHTML = insertpoa;
 

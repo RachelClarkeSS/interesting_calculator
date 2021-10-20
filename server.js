@@ -18,9 +18,16 @@ app.get('/',function(req,res){
 
 app.post('/showAnswer', (req,res)=>{  
   
-  var currency = req.body.saver[0];
-
   console.log(req.body);
+
+  if (req.body.saver[0]=='D'){
+    var currency = 'Dh'+" ";
+  } else if (req.body.saver[0] == '¥' || req.body.saver[0] == '₩'){
+     var currency = req.body.saver[0]+" ";
+  } else{
+    var currency = req.body.saver[0];
+  }
+ 
 
   var receiveobj = req.body.receive;
   var amountobj = req.body.amount; 
@@ -30,9 +37,6 @@ app.post('/showAnswer', (req,res)=>{
   delete req.body.saver; 
 
   var arrayOfObjects = Object.values(req.body);
-  console.log(arrayOfObjects);
-  console.log(receiveobj);
-  console.log(amountobj);
   var globalDays = 0;
   var globalInterest = 0;
   var baseTotal = arrayOfObjects[0];
@@ -921,7 +925,8 @@ app.post('/showAnswer', (req,res)=>{
             "</p></td><td><p>" + diff + "</p></td><td><p>"+arrayOfObjects[interest2]+"%</p></td>"+
             "<td><p>"+currency + answer9 + "</p></td><td></td></tr>";
 
-            num1 = num1.toFixed(2);
+            
+            num1 = num1.toLocaleString("en", {minimumFractionDigits: 2});
 
             resultsExport += "<tr>"+
             "<td><p>" + date1y + " " + "to" + " " + date2z +"</p></td>"+
@@ -988,7 +993,7 @@ app.post('/showAnswer', (req,res)=>{
             "</p></td><td><p>" + diff + "</p></td><td><p>"+arrayOfObjects[interest2]+"%</p></td>"+
             "<td><p>"+currency + answer9 + "</p></td><td></td></tr>";
 
-            num1 = num1.toFixed(2);
+            num1 = num1.toLocaleString("en", {minimumFractionDigits: 2});
 
             resultsExport += "<tr>"+
             "<td><p>" + date1y + " " + "to" + " " + date2z +"</p></td>"+
@@ -1138,9 +1143,13 @@ app.post('/showAnswer', (req,res)=>{
               "><p>" + diff2 + "</p></td>" + 
               "<td><p>"+arrayOfObjects[p+1]+"%</p></td><td><p>"+currency+answer10+"</td></tr>";
 
+              var lower = arrayOfObjects[p];
+              lower = parseFloat(lower);
+              lower = lower.toLocaleString("en", {minimumFractionDigits: 2});
+
               resultsExport += "<tr>"+
               "<td><p>" + date1y + " " + "to" + " " + date3p +"</p></td>"+
-              "<td><p>"+currency+arrayOfObjects[p]+"</p></td>"+
+              "<td><p>"+currency+lower+"</p></td>"+
               "<td><p>" + diff1 + "</p></td>" + 
               "<td><p>"+arrayOfObjects[p+1]+"%</p></td>"+
               "<td></td><td></td>"+
@@ -1153,9 +1162,13 @@ app.post('/showAnswer', (req,res)=>{
 
               arrayOfObjects[p] = arrayOfObjects[p] - amountobj;
 
+              var lower = arrayOfObjects[p];
+              lower = parseFloat(lower);
+              lower = lower.toLocaleString("en", {minimumFractionDigits: 2});
+
               resultsExport += "<tr>"+
               "<td><p>" + date3p + " " + "to" + " " + date2z +"</p></td>"+
-              "<td><p>"+currency+arrayOfObjects[p]+"</p></td>"+
+              "<td><p>"+currency+lower+"</p></td>"+
               "<td><p>" + diff2 + "</p></td>" + 
               "<td><p>"+arrayOfObjects[p+1]+"%</p></td>"+
               "<td></td><td></td>"+
@@ -1192,9 +1205,13 @@ app.post('/showAnswer', (req,res)=>{
               "><p>" + diff1 + "</p></td>" + 
               "<td><p>"+arrayOfObjects[p+1]+"%</p></td><td><p>"+currency+answer9+"</td></tr>";
 
+              var lower = arrayOfObjects[p];
+              lower = parseFloat(lower);
+              lower = lower.toLocaleString("en", {minimumFractionDigits: 2});
+
               resultsExport += "<tr>"+
               "<td><p>" + date1y + " " + "to" + " " + date2z +"</p></td>"+
-              "<td><p>"+currency+arrayOfObjects[p]+"</p></td>"+
+              "<td><p>"+currency+lower+"</p></td>"+
               "<td><p>" + diff1 + "</p></td>" + 
               "<td><p>"+arrayOfObjects[p+1]+"%</p></td>"+
               "<td></td><td></td>"+
@@ -1290,13 +1307,6 @@ app.post('/showAnswer', (req,res)=>{
         }
         
 
-        console.log('alltogether:')
-        console.log(alltogether);
-        console.log('arraytoarray:');
-        console.log(arraytoarray);
-        console.log('receiveobj:');
-        console.log(receiveobj);
-
         var countpayments = 0;
 
         for (i=0; i<alltogether.length; i=i+4){
@@ -1320,12 +1330,15 @@ app.post('/showAnswer', (req,res)=>{
             globalDays += diff1 + diff2;
             totalInterest += answer1 + answer2;
             var answer9 = answer1.toLocaleString("en", {minimumFractionDigits: 2});
-            var answer10 = answer2.toLocaleString("en", {minimumFractionDigits: 2});
+            var answer10 = parseFloat(answer2);
+            answer10 = answer10.toLocaleString("en", {minimumFractionDigits: 2});
             var thisamount = parseFloat(amountobj[countpayments]);
             var date1y = reformatDate(date1);
             var date2z = reformatDate(date2);
             var date3p = reformatDate(date3);
+            var amountobj9 = parseFloat(amountobj9);
             var amountobj9 = thisamount.toLocaleString("en", {minimumFractionDigits: 2});
+
             results += "<tr><td colspan='4'><p style='color: green;'>"+currency+amountobj9 + " " + 
             "POA received on" + " " + date3p+"</p></td></tr>";
             results += "<tr><td><p>" + 
@@ -1338,9 +1351,13 @@ app.post('/showAnswer', (req,res)=>{
             "<td><p>"+date3p+"</p></td>"+
             "<td><p>"+currency+amountobj9+"</p></td>";
 
+            var lower = alltogether[i+2];
+            lower = parseFloat(lower);
+            lower = lower.toLocaleString("en", {minimumFractionDigits: 2});
+            
             resultsExport += "<tr>"+
             "<td><p>" + date3p + " " + "to" + " " + date2z +"</p></td>"+
-            "<td><p>"+currency+alltogether[i+2]+"</p></td>"+
+            "<td><p>"+currency+lower+"</p></td>"+
             "<td><p>" + diff2 + "</p></td>" + 
             "<td><p>"+alltogether[i+3]+"%</p></td>"+
             "<td></td><td></td>"+
@@ -1368,15 +1385,23 @@ app.post('/showAnswer', (req,res)=>{
         
               var date1y = reformatDate(alltogether[i]);
               var date2z = reformatDate(alltogether[i+1]);
+
+              var lower = alltogether[i+3];
+              lower = parseFloat(lower);
+              lower = lower.toLocaleString("en", {minimumFractionDigits: 2});
         
               results += "<tr><td><p>" + 
               date1y + " " + "to" + " " + date2z +
-              "</p></td><td><p>" + diff + "</p></td><td><p>"+alltogether[i+3]+"%</p></td>"+
+              "</p></td><td><p>" + diff + "</p></td><td><p>"+lower+"%</p></td>"+
               "<td><p>"+currency + answer9 + "</p></td><td></td></tr>";
+
+              var lower = alltogether[i+2];
+              lower = parseFloat(lower);
+              lower = lower.toLocaleString("en", {minimumFractionDigits: 2});
 
               resultsExport += "<tr>"+
               "<td><p>" + date1y + " " + "to" + " " + date2z +"</p></td>"+
-              "<td><p>"+currency+alltogether[i+2]+"</p></td>"+
+              "<td><p>"+currency+lower+"</p></td>"+
               "<td><p>" + diff + "</p></td>" + 
               "<td><p>"+alltogether[i+3]+"%</p></td>"+
               "<td></td><td></td>"+
@@ -1525,9 +1550,13 @@ app.post('/showAnswer', (req,res)=>{
               "<td><p>"+date3p+"</p></td>"+
               "<td><p>"+currency+amountobj9+"</p></td>";
 
+              var lower = alltogether[i+2];
+              lower = parseFloat(lower);
+              lower = lower.toLocaleString("en", {minimumFractionDigits: 2});
+
               resultsExport += "<tr>"+
               "<td><p>" + date3p + " " + "to" + " " + date2z +"</p></td>"+
-              "<td><p>"+currency+alltogether[i+2]+"</p></td>"+
+              "<td><p>"+currency+lower+"</p></td>"+
               "<td><p>" + diff2 + "</p></td>" + 
               "<td><p>"+alltogether[i+3]+"%</p></td>"+
               "<td></td><td></td>"+
@@ -1561,9 +1590,13 @@ app.post('/showAnswer', (req,res)=>{
                 "</p></td><td><p>" + diff + "</p></td><td><p>"+alltogether[i+3]+"%</p></td>"+
                 "<td><p>"+currency + answer9 + "</p></td><td></td></tr>";
 
+                var lower = alltogether[i+2];
+                lower = parseFloat(lower);
+                lower = lower.toLocaleString("en", {minimumFractionDigits: 2});
+
                 resultsExport += "<tr>"+
                 "<td><p>" + date1y + " " + "to" + " " + date2z +"</p></td>"+
-                "<td><p>"+currency+alltogether[i+2]+"</p></td>"+
+                "<td><p>"+currency+lower+"</p></td>"+
                 "<td><p>" + diff + "</p></td>" + 
                 "<td><p>"+alltogether[i+3]+"%</p></td>"+
                 "<td></td><td></td>"+
@@ -1724,9 +1757,13 @@ app.post('/showAnswer', (req,res)=>{
             "<td><p>"+date3p+"</p></td>"+
             "<td><p>"+currency+amountobj9+"</p></td>";
 
+            var lower = alltogether[i+2];
+            lower = parseFloat(lower);
+            lower = lower.toLocaleString("en", {minimumFractionDigits: 2});
+
             resultsExport += "<tr>"+
             "<td><p>" + date3p + " " + "to" + " " + date2z +"</p></td>"+
-            "<td><p>"+currency+alltogether[i+2]+"</p></td>"+
+            "<td><p>"+currency+lower+"</p></td>"+
             "<td><p>" + diff2 + "</p></td>" + 
             "<td><p>"+alltogether[i+3]+"%</p></td>"+
             "<td></td><td></td>"+
@@ -1760,9 +1797,13 @@ app.post('/showAnswer', (req,res)=>{
               "</p></td><td><p>" + diff + "</p></td><td><p>"+alltogether[i+3]+"%</p></td>"+
               "<td><p>"+currency + answer9 + "</p></td><td></td></tr>";
 
+              var lower = alltogether[i+2];
+              lower = parseFloat(lower);
+              lower = lower.toLocaleString("en", {minimumFractionDigits: 2});
+
               resultsExport += "<tr>"+
               "<td><p>" + date1y + " " + "to" + " " + date2z +"</p></td>"+
-              "<td><p>"+currency+alltogether[i+2]+"</p></td>"+
+              "<td><p>"+currency+lower+"</p></td>"+
               "<td><p>" + diff + "</p></td>" + 
               "<td><p>"+alltogether[i+3]+"%</p></td>"+
               "<td></td><td></td>"+

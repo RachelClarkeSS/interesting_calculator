@@ -176,13 +176,16 @@
                  required></td>
             <td><input type="date" id="terminate0" name="terminate0" style="width: 160px; text-align: center;"
                  required></td>
-            <td><input type="text" id="saver" name="saver" style="display:none;" value="Select Finish" 
+            <td><input type="text" id="saver" name="saver" style="display:none;" value="£" 
                 placeholder="Select Finish" 
                 onfocus="(this.type='date')" onblur="(this.type='text')"></td>
         </tr>
     </table>
-
     <table class="center" id="center3">
+        
+    </table>
+    <br>
+    <table class="center" id="center4">
         
     </table>
     <br>
@@ -226,6 +229,7 @@
 
           var count = 0;
           var poacount = 0;
+          var updatecurrency = '£';
 
           var cDate = document.querySelector("#commence0");
           var tDate = document.querySelector("#terminate0");
@@ -235,7 +239,9 @@
             var add = '<style>.input-symbol-euro:before{content:"'+newValue+'"!important;}</style>';
            
             $('body').append(add);
-            document.getElementById('saver').value = newValue;
+             document.getElementById('saver').value = newValue;
+
+             updatecurrency = newValue;
             
           }
 
@@ -283,26 +289,30 @@
                 count + `"style="width: 160px; text-align: center;" required></td>
                 <td><input type="date" id="terminate`+count+`" name="terminate` + count + `"style="width: 160px; 
                 text-align: center;" required></td><td><input type="text" id="saver" name="saver" style="display:none;" 
-                    value="Select Finish" placeholder="Select Finish" 
-                onfocus="(this.type='date')" onblur="(this.type='text')"></td></tr>`;
-                document.getElementById("center2").innerHTML += newForm;
+                    value=`+updatecurrency+`></td></tr>`;
+                if (count ==0){
+                    document.getElementById("center3").innerHTML = newForm;
+                } else{
+                    document.getElementById("center3").innerHTML += newForm;
+                }
+                
         }
 
 
         function addpoa(){
             if (poacount == 0){
                 console.log('coming here');
-                var insertpoa = `<br><tr><td><label for="receive"><h6>DATE RECEIVED</h6></label></td>
+                var insertpoa = `<tr><td><label for="receive"><h6>DATE RECEIVED</h6></label></td>
                 <td><label for="amount"><h6>PAYMENT ON ACCT</h6></label></td></tr><tr><td><input type="date" 
                 id="receive" name="receive" style="width: 160px; text-align: center;" 
                 required></td><td><span class="input-symbol-euro"><input type="number" onchange="setTwoNumberDecimal(this)"
                 id="amount" name="amount" step ="any" style="width: 160px;
                 text-align: center;"></span></td></tr>`;
 
-                document.getElementById("center3").innerHTML = insertpoa;
+                document.getElementById("center4").innerHTML = insertpoa;
 
             } else{
-                var table = document.getElementById("center3");
+                var table = document.getElementById("center4");
                 var row = table.insertRow(-1);
                 var cell1 = row.insertCell(0);
                 var cell2 = row.insertCell(1);
@@ -310,7 +320,7 @@
                 id="receive" name="receive" style="width: 160px; text-align: center;"  
                 required></td>`
                 cell2.innerHTML = `<td><span class="input-symbol-euro"><input type="number" onchange="setTwoNumberDecimal(this)"
-                id="amount" name="amount" style="width: 160px;
+                id="amount" name="amount" step ="any" style="width: 160px;
                 text-align: center;"></span></td>`;
                 
             }

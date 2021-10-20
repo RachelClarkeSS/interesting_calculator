@@ -18,7 +18,9 @@ app.get('/',function(req,res){
 
 app.post('/showAnswer', (req,res)=>{  
   
-  var currency = req.body.saver;
+  var currency = req.body.saver[0];
+
+  console.log(req.body);
 
   var receiveobj = req.body.receive;
   var amountobj = req.body.amount; 

@@ -270,12 +270,18 @@
           });
 
           function deleteDate(){
-            var myobj = document.getElementById("center2");
-            myobj.deleteRow(-1);
+            if (count > 0){
+                var myobj = document.getElementById("center3");
+                myobj.deleteRow(-1);
+            } else{
+                var myobj = document.getElementById("center2");
+                myobj.deleteRow(-1);
+            }
+            
         }
 
         function deletePOA(){
-            var myobj = document.getElementById("center3");
+            var myobj = document.getElementById("center4");
             myobj.deleteRow(-1);
         }
 

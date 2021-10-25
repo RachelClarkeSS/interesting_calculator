@@ -13,8 +13,16 @@ function reformatDate(dateStr){
 }
 
 app.get('/',function(req,res){
-    res.sendFile(path.join(__dirname+'/index.html'));
+    res.sendFile(path.join(__dirname+'/home.html'));
   });
+
+  app.get('/main-image',function(req,res){
+    res.sendFile(path.join(__dirname+'/boe.jpg'));
+  });
+
+  app.get('/calculate', function(req,res){
+    res.sendFile(path.join(__dirname+'/index.html'));
+  })
 
 app.post('/showAnswer', (req,res)=>{  
   
@@ -100,7 +108,7 @@ app.post('/showAnswer', (req,res)=>{
     poas = false;
   }
 
-  var results = "<table class='table table-striped table-dark'><tr><th style='width: 40%'><p><b>"+
+  var results = "<table class='table table-light'><tr><th style='width: 40%'><p><b>"+
     "Period</b></p></th><th class='thead-dark' style='width: 15%'><p><b>Days</b></p></th><th class='thead-dark'"+ 
     "style='width: 15%'><p><b>Rate</b></p></th><th class='thead-dark' style='width: 30%'><p><b>Interest</b></p></th>";
   
@@ -1842,6 +1850,7 @@ app.post('/showAnswer', (req,res)=>{
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.6/jspdf.plugin.autotable.min.js"></script>
     <script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>  
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap" rel="stylesheet">
@@ -1849,7 +1858,7 @@ app.post('/showAnswer', (req,res)=>{
     <style>
         body {
             text-align: center;
-            background-color: #202020;
+            overflow-x: hidden;
         }
         h2 {
             text-align: center;   
@@ -1861,11 +1870,11 @@ app.post('/showAnswer', (req,res)=>{
             font-family: Arial, Helvetica, sans-serif;
         }
         h5 {
-            color: rgb(255, 255, 255); 
+            color: white; 
             font-family: Arial, Helvetica, sans-serif;
         }
         p {
-            color: rgb(255, 255, 255); 
+            color: black; 
             font-family: Arial, Helvetica, sans-serif;
         }
         .center {
@@ -1894,19 +1903,54 @@ app.post('/showAnswer', (req,res)=>{
          padding: 22px 5%;
          text-decoration: none;
          font-size: 17px;
+         height: 110px;
          }
         #days{
             color: white;
         }
-    </style>
-    </head>
-    <body>
-    <div class="topnav fixed-top">
-        <a href="/" style="width: 100%; background-color: black;"><h2><span class="iconify" 
-            data-icon="typcn:calculator"></span>Legal 
-            Interest Calculator</h2></a>
-    </div>
+        u {
+          text-decoration: none;
+          border: 1px solid black;
+      }​
 
+      tr{
+        border-top: hidden;
+    }
+
+          </style>
+      </head>
+      <body>
+      <div class="topnav">
+          <a href="/" onclick='showHome();' style="width: 100%; background-color: white; 
+          font-family: Arial, Helvetica, sans-serif; color: black;"><h3>
+              <u><b>SEASONED SYSTEMS</b></u></h3><h4>Interest Calculator</h4></a>
+      </div>
+      <div class="row">
+
+      <div style="min-width: 50%">
+          <button type="button" class="btn btn-dark" style="width: 100%;" onclick="showHide('calculate')">
+          <b>Calculate Interest</b>
+          </button>
+      
+      </div>
+          
+      
+      <div style="min-width: 50%">
+          <button type="button" class="btn btn-dark"  
+          style="width: 100%;" <a onclick="(information())"><b>Information</b></a>
+            
+          </button>
+      </div>
+          
+      <form id="calculate" action="/calculate" method="GET">
+                  
+      </form>
+      
+      <form id="information" action="/applications" method="GET">
+      
+      </form>
+      
+      </div>
     <div id="results" class="span4 achievements-wrapper">
         ${results}
     </div><br>
@@ -1969,6 +2013,53 @@ app.post('/showAnswer', (req,res)=>{
         win.document.close();   // CLOSE THE CURRENT WINDOW.
         win.save();    // PRINT THE CONTENTS.
     }
+
+    function showHide(name){
+      document.getElementById(name).submit();
+        
+    }
+
+    function information(){
+      var claimant = 
+      '<div style="text-align: justify; text-justify: inter-word;">'+
+      '<br>' +
+      '<br>' +
+      '<b>SCOPE</b>'+'<br>' +'<br>' +
+      'It is important to enter dates chronologically, for both the date periods and '+" "+
+      'also the dates that payments on account were received. For example, if two payments'+" "+
+      'on account were received on 01/12/2020 and 15/06/2020, then the date period on 15 June'+ " "+
+      'is the first date period that should be entered into the calculator as that is the earliest date'+
+      '<br>' +
+      '<br>' +
+      '<b>CURRENCY</b>'+
+      '<br>' +
+      '<br>' +
+      'If you would like to use an alternative currency, you can choose from a selection of 6 different'+" "+
+      'popular currencies to use by clicking on the selection above the calculator'+
+      '<br>' +
+      '<br>' +
+      '<b>RATES</b>'+
+      '<br>' +
+      '<br>' +
+      'It is possible to include numerous rates into this calculator, which is useful in situations'+" "+
+      'like Part 36 success when you are entitled to enhanced interest for a specific period of the case'+
+      '<br>' +
+      '<br>' +
+      '<b>MULTIPLE DATES, POAs and RATES</b>'+
+      '<br>' +
+      '<br>' +
+      'Functionality is provided on the calculator to add or delete dates, poas or rates for the calculation'+ " "+
+      'by clicking on the "+" and "-" operators shown in the calculator';
+
+      Swal.fire({
+          title: 'Information',
+          html: claimant,
+          icon: 'info',
+          confirmButtonText: 'Okay'
+          
+      })
+
+  }
     </script>                                          
     </body>
     </html>`)

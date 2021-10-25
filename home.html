@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legal Interest Calculator</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" 
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap" rel="stylesheet">
+    
+    <style>
+
+        body {
+                background-position: center center;
+                background-attachment: fixed;
+                background-repeat: no-repeat;
+                background-size: cover;
+                max-width: 100%;
+                height: 100%;
+                background-image: url("/main-image");
+                text-align: center;
+                overflow-x: hidden;
+            }
+
+        h2 {
+            text-align: center;   
+            color: black; 
+            font-family: 'Alfa Slab One', cursive;
+        }
+
+        h6 {
+            color: black; 
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        h5 {
+            color: black; 
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .center {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        input.placeholder {
+            text-align: center;
+        }
+
+        input[type="checkbox"]:focus{
+        outline:none !important; }
+
+         .topnav {
+
+         background-color: rgb(51, 51, 51);
+         overflow: hidden;
+         position: sticky;
+         }
+
+         .topnav a {
+         float: left;
+         color: #f2f2f2;
+         text-align: center;
+         padding: 22px 5%;
+         text-decoration: none;
+         font-size: 17px;
+         height: 110px;
+         }
+
+        #days{
+            color: white;
+        }
+
+        .input-symbol-euro {
+        position: relative;
+        }
+        .input-symbol-euro input {
+            padding-left:18px;
+        }
+        .input-symbol-euro:before {
+            position:absolute;
+     
+            content:"£";
+            left: 5px;
+            font-size: x-large;
+            font-weight: bold;
+            bottom: -9px;
+        }
+
+        .input-symbol-percentage {
+        position: relative;
+        }
+        .input-symbol-percentage input {
+            padding-left:18px;
+        }
+        .input-symbol-percentage:after {
+            position: absolute;
+    
+            content:"%";
+            left: 100px;
+            font-size: x-large;
+            font-weight: bold;
+            bottom: -9px;
+        }
+
+        .featuredBtn.active {
+            background-color: goldenrod;
+            color: black;
+        }
+
+        .featuredBtn {
+
+            color: #8c8c8c;
+            background-color: #f4efeb;
+            border: none;
+            outline: none;
+        }
+
+        u {
+            text-decoration: none;
+            border: 1px solid black;
+        }​
+
+
+            </style>
+        </head>
+        <body>
+        <div class="topnav">
+            <a href="/" onclick='showHome();' style="width: 100%; background-color: white; 
+            font-family: Arial, Helvetica, sans-serif; color: black;"><h3>
+                <u><b>SEASONED SYSTEMS</b></u></h3><h4>Interest Calculator</h4></a>
+        </div>
+
+<div class="row">
+
+    <div style="min-width: 50%">
+    <button type="button" class="btn btn-dark" style="width: 100%;" onclick="showHide('calculate')">
+    <b>Calculate Interest</b>
+    </button>
+
+</div>
+    
+
+<div style="min-width: 50%">
+    <button type="button" class="btn btn-dark"  
+    style="width: 100%;" <a onclick="(information())"><b>Information</b></a>
+      
+    </button>
+</div>
+    
+<form id="calculate" action="/calculate" method="GET">
+            
+</form>
+
+<form id="information" action="/applications" method="GET">
+
+</form>
+
+</div>
+
+
+
+                                                    
+      <script>
+
+        function information(){
+            var claimant = 
+            '<div style="text-align: justify; text-justify: inter-word;">'+
+            '<br>' +
+            '<br>' +
+            '<b>SCOPE</b>'+'<br>' +'<br>' +
+            'It is important to enter dates chronologically, for both the date periods and '+" "+
+            'also the dates that payments on account were received. For example, if two payments'+" "+
+            'on account were received on 01/12/2020 and 15/06/2020, then the date period on 15 June'+ " "+
+            'is the first date period that should be entered into the calculator as that is the earliest date'+
+            '<br>' +
+            '<br>' +
+            '<b>CURRENCY</b>'+
+            '<br>' +
+            '<br>' +
+            'If you would like to use an alternative currency, you can choose from a selection of 6 different'+" "+
+            'popular currencies to use by clicking on the selection above the calculator'+
+            '<br>' +
+            '<br>' +
+            '<b>RATES</b>'+
+            '<br>' +
+            '<br>' +
+            'It is possible to include numerous rates into this calculator, which is useful in situations'+" "+
+            'like Part 36 success when you are entitled to enhanced interest for a specific period of the case'+
+            '<br>' +
+            '<br>' +
+            '<b>MULTIPLE DATES, POAs and RATES</b>'+
+            '<br>' +
+            '<br>' +
+            'Functionality is provided on the calculator to add or delete dates, poas or rates for the calculation'+ " "+
+            'by clicking on the "+" and "-" operators shown in the calculator';
+
+            Swal.fire({
+                title: 'Information',
+                html: claimant,
+                icon: 'info',
+                confirmButtonText: 'Okay'
+                
+            })
+
+        }
+
+        function showHide(name){
+            document.getElementById(name).submit();
+              
+          }
+      </script>
+</body>
+</html>

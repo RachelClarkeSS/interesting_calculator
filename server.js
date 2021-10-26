@@ -108,7 +108,7 @@ app.post('/showAnswer', (req,res)=>{
     poas = false;
   }
 
-  var results = "<table class='table table-light'><tr><th style='width: 40%'><p><b>"+
+  var results = "<table class='table table-striped table-light'><tr><th style='width: 40%'><p><b>"+
     "Period</b></p></th><th class='thead-dark' style='width: 15%'><p><b>Days</b></p></th><th class='thead-dark'"+ 
     "style='width: 15%'><p><b>Rate</b></p></th><th class='thead-dark' style='width: 30%'><p><b>Interest</b></p></th>";
   
@@ -1925,32 +1925,6 @@ app.post('/showAnswer', (req,res)=>{
           font-family: Arial, Helvetica, sans-serif; color: black;"><h3>
               <u><b>SEASONED SYSTEMS</b></u></h3><h4>Interest Calculator</h4></a>
       </div>
-      <div class="row">
-
-      <div style="min-width: 50%">
-          <button type="button" class="btn btn-dark" style="width: 100%;" onclick="showHide('calculate')">
-          <b>Calculate Interest</b>
-          </button>
-      
-      </div>
-          
-      
-      <div style="min-width: 50%">
-          <button type="button" class="btn btn-dark"  
-          style="width: 100%;" <a onclick="(information())"><b>Information</b></a>
-            
-          </button>
-      </div>
-          
-      <form id="calculate" action="/calculate" method="GET">
-                  
-      </form>
-      
-      <form id="information" action="/applications" method="GET">
-      
-      </form>
-      
-      </div>
     <div id="results" class="span4 achievements-wrapper">
         ${results}
     </div><br>
@@ -2014,52 +1988,6 @@ app.post('/showAnswer', (req,res)=>{
         win.save();    // PRINT THE CONTENTS.
     }
 
-    function showHide(name){
-      document.getElementById(name).submit();
-        
-    }
-
-    function information(){
-      var claimant = 
-      '<div style="text-align: justify; text-justify: inter-word;">'+
-      '<br>' +
-      '<br>' +
-      '<b>SCOPE</b>'+'<br>' +'<br>' +
-      'It is important to enter dates chronologically, for both the date periods and '+" "+
-      'also the dates that payments on account were received. For example, if two payments'+" "+
-      'on account were received on 01/12/2020 and 15/06/2020, then the date period on 15 June'+ " "+
-      'is the first date period that should be entered into the calculator as that is the earliest date'+
-      '<br>' +
-      '<br>' +
-      '<b>CURRENCY</b>'+
-      '<br>' +
-      '<br>' +
-      'If you would like to use an alternative currency, you can choose from a selection of 6 different'+" "+
-      'popular currencies to use by clicking on the selection above the calculator'+
-      '<br>' +
-      '<br>' +
-      '<b>RATES</b>'+
-      '<br>' +
-      '<br>' +
-      'It is possible to include numerous rates into this calculator, which is useful in situations'+" "+
-      'like Part 36 success when you are entitled to enhanced interest for a specific period of the case'+
-      '<br>' +
-      '<br>' +
-      '<b>MULTIPLE DATES, POAs and RATES</b>'+
-      '<br>' +
-      '<br>' +
-      'Functionality is provided on the calculator to add or delete dates, poas or rates for the calculation'+ " "+
-      'by clicking on the "+" and "-" operators shown in the calculator';
-
-      Swal.fire({
-          title: 'Information',
-          html: claimant,
-          icon: 'info',
-          confirmButtonText: 'Okay'
-          
-      })
-
-  }
     </script>                                          
     </body>
     </html>`)

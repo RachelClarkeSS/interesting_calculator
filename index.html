@@ -165,7 +165,7 @@
 <button id='Dh' class="featuredBtn" style="width: 40px;" onclick="currency('Dh')"><b>Dh</b></button>
 <button id='₩' class="featuredBtn" style="width: 40px;; margin-right: 0.01%" onclick="currency('₩')"><b>₩</b></button>
 <br><br>
-<form action="/showAnswer" method="POST">
+<form id="subform" action="/showAnswer" method="POST">
     <table class="center" id="center1">
         <tr>
             <td><label for="base0"></label><h6>AMOUNT</h6></td>
@@ -232,7 +232,7 @@
         <a onclick="addRateDate()" style="font-size: xx-large; color: green; margin-left: 8px; margin-right: 5px;"><b>+</b></a>RATE
         <a onclick="deleteDate()" style="font-size: xx-large; color: red;"><b>-</b></a></h4><br>
     <tr>
-        <td><input type="submit" class="btn btn-dark active" value="Calculate" style="width:320px"></td>
+        <td><input type="button" onclick="myFunction();" class="btn btn-dark active" value="Calculate" style="width:320px"></td>
     </tr>
     
 </table></form><br>
@@ -240,22 +240,126 @@
 
                                                     
       <script>
-          $("#adddate").click(function(){
-              $('input[type="checkbox"]').prop('checked',false);
-            });
 
-          $("#addratedate").click(function(){
-              $('input[type="checkbox"]').prop('checked',false);
-            });
-        
-          $("#addPoA").click(function(){
-              $('input[type="checkbox"]').prop('checked',false);
-           });
+        var dateorder = true;
 
-           $(".js-example-tags").select2({
-              tags: true
-            });
+        function myFunction(){
+            var commy = document.querySelectorAll('[id=commence0]');
+            var termy = document.querySelectorAll('[id=terminate0]');
+            var payee = document.querySelectorAll('[id=receive]');
+           
+
+            console.log(payee[0] == null);
+            
+
+            console.log(commy[0].value);
+            console.log(termy.length);
+
+            if (payee[0] == null){
+                dateorder = true;
+                for (i=0; i<commy.length; i++){
+                if (commy[i].value > termy[i].value){
+
+                    var claimant = 
+                    '<div style="text-align: justify; text-justify: inter-word;">'+
+                    'You have not entered dates chronologically. Go back and try again';
+                    
+
+                    Swal.fire({
+                        title: 'Error!',
+                        html: claimant,
+                        icon: 'error',
+                        confirmButtonText: 'Okay'
+                        
+                    })
+
+                    dateorder = false;
+
+                }
+            }
+        } else {
+            dateorder = true;
+            var poainside = true;
+            for (i=1; i<payee.length; i++){
+                if (payee[i].value < payee[i-1].value){
+
+                    var claimant = 
+                    '<div style="text-align: justify; text-justify: inter-word;">'+
+                    'You have not entered dates chronologically. Go back and try again';
+                    
+
+                    Swal.fire({
+                        title: 'Error!',
+                        html: claimant,
+                        icon: 'error',
+                        confirmButtonText: 'Okay'
+                        
+                    })
+
+                    dateorder = false;
+
+                }
+            }
+
+            for (i=0; i<commy.length; i++){
+                if (commy[i].value > termy[i].value){
+
+                    var claimant = 
+                    '<div style="text-align: justify; text-justify: inter-word;">'+
+                    'You have not entered dates chronologically. Go back and try again';
+                    
+
+                    Swal.fire({
+                        title: 'Error!',
+                        html: claimant,
+                        icon: 'error',
+                        confirmButtonText: 'Okay'
+                        
+                    })
+
+                    dateorder = false;
+
+                }
+            }
+
+            for (p=0; p < payee.length; p++){
+                    if (payee[p].value < commy[0].value || payee[p].value > termy[termy.length - 1].value){
+                        poainside = false;
+                    } else{
+                        console.log('true');
+                    }
+                
+            }
         
+
+            if (poainside == false){
+
+                var claimant = 
+                '<div style="text-align: justify; text-justify: inter-word;">'+
+                'You have entered a payment on account out of the range of the date periods. If a payment was received'+ " "+
+                'prior to the entitlement period then you should reduce the base amount accordingly'+
+                '<br><br>'+
+                'If it was received afterwards, then it should not be included as it does not detract from the interest'+ " "+ 
+                'entitlement for the applicable period';
+                
+                Swal.fire({
+                    title: 'Error!',
+                    html: claimant,
+                    icon: 'error',
+                    confirmButtonText: 'Okay'
+                    
+                })
+
+            }
+        
+        }
+
+            if (dateorder == true && poainside != false){
+                    document.getElementById('subform').submit();
+                }
+            
+        }
+
             $("button").click(function() {
                 $("button").removeClass("active");
                 $(this).addClass("active");
@@ -303,12 +407,13 @@
 
         }
 
+         
           var count = 0;
           var poacount = 0;
           var updatecurrency = '£';
-
-          var cDate = document.querySelector("#commence0");
-          var tDate = document.querySelector("#terminate0");
+          var datecount = 0;
+          
+          
 
           function currency(money){
             var newValue = money;//coming from somewhere
@@ -337,11 +442,6 @@
               cell2.innerHTML = `<td><input type="date" id="terminate0" name="terminate`+count+`" style="width: 160px; 
                 text-align: center;" required></td>`;
             }
-
-          cDate.addEventListener('change', function() {
-            tDate.min = this.value;
-            console.log('working');
-          });
 
           function deleteDate(){
             if (count > 0){

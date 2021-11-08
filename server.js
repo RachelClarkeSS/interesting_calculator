@@ -201,7 +201,7 @@ app.post('/showAnswer', (req,res)=>{
           results += "<tr><td><p>" + 
           date3p + " " + "to" + " " + date2z +"</p></td><td"+
           "><p>" + diff2 + "</p></td>" + 
-          "<td><p>"+arrayOfObjects[1]+"%</p></td><td><p>"+currency+answer10+"</td></tr>";
+          "<td><p>"+arrayOfObjects[1][0]+"%</p></td><td><p>"+currency+answer10+"</td></tr>";
 
           resultsExport += "<tr>"+
           "<td colspan='2'><p>" + date1y + " " + "to" + " " + date3p +"</p></td>"+
@@ -396,7 +396,7 @@ app.post('/showAnswer', (req,res)=>{
                   results += "<tr><td><p>" + 
                   date1y + " " + "to" + " " + date2y +"</p></td><td"+
                   "><p>" + diff1 + "</p></td>" + 
-                  "<td><p>"+arrayOfObjects[1]+"%</p></td><td><p>"+currency+answer11+"</td></tr>";
+                  "<td><p>"+arrayOfObjects[1][0]+"%</p></td><td><p>"+currency+answer11+"</td></tr>";
 
                   resultsExport+= "<tr><td colspan='2'><p>Payment on Account</p></td>"+
                   "<td colspan='2'></td><td colspan='2'></td><td colspan='2'></td>"+
@@ -1145,13 +1145,13 @@ app.post('/showAnswer', (req,res)=>{
               results += "<tr><td><p>" + 
               date1y + " " + "to" + " " + date3p +"</p></td><td"+
               "><p>" + diff1 + "</p></td>" + 
-              "<td><p>"+arrayOfObjects[p+1]+"%</p></td><td><p>"+currency+answer9+"</td></tr>";
+              "<td><p>"+arrayOfObjects[p+1][0]+"%</p></td><td><p>"+currency+answer9+"</td></tr>";
               results += "<tr><td colspan='4'><p style='color: green;'>"+currency+amountobj9 + " " + 
               "POA received on" + " " + date3p+"</p></td></tr>";
               results += "<tr><td><p>" + 
               date3p + " " + "to" + " " + date2z +"</p></td><td"+
               "><p>" + diff2 + "</p></td>" + 
-              "<td><p>"+arrayOfObjects[p+1]+"%</p></td><td><p>"+currency+answer10+"</td></tr>";
+              "<td><p>"+arrayOfObjects[p+1][0]+"%</p></td><td><p>"+currency+answer10+"</td></tr>";
 
               var lower = arrayOfObjects[p];
               lower = parseFloat(lower);
@@ -1970,7 +1970,7 @@ app.post('/showAnswer', (req,res)=>{
     $(document).ready(function () {
       $("#export_button").click(function(){
         TableToExcel.convert(document.getElementById("resultsExcel"), {
-            name: "Traceability.xlsx",
+            name: "Seasoned Systems - Interest Calculations.xlsx",
             sheet: {
             name: "Sheet1"
             }
@@ -1999,7 +1999,7 @@ app.post('/showAnswer', (req,res)=>{
         'independent research/calculations and not rely on this tool as your sole reference point</h6></div>')
         win.document.write('</body></html>');
         win.document.close();   // CLOSE THE CURRENT WINDOW.
-        win.save();    // PRINT THE CONTENTS.
+        win.print();    // PRINT THE CONTENTS.
     }
 
     </script>                                          
